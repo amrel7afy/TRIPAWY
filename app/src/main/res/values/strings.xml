@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">TRIPAWY</string>
+    <string name="edit">Edit</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="title">Title</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="start">Start</string>
+    <string name="notes">Notes</string>
 </resources>

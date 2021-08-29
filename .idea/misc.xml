@@ -3,11 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/JAVA/android projects/TRIPAWY/app/src/main/res/drawable/ic_group_1.xml" value="0.26614583333333336" />
-        <entry key="..\:/JAVA/android projects/TRIPAWY/app/src/main/res/drawable/ic_launcher_background.xml" value="0.26614583333333336" />
-        <entry key="..\:/JAVA/android projects/TRIPAWY/app/src/main/res/drawable/ic_rectangle_1.xml" value="0.26614583333333336" />
-        <entry key="..\:/JAVA/android projects/TRIPAWY/app/src/main/res/layout/activity_home.xml" value="0.25" />
-        <entry key="..\:/JAVA/android projects/TRIPAWY/app/src/main/res/layout/activity_main.xml" value="0.2359375" />
+        <entry key="..\:/CSED/Courses/ITI-Mansoura/Testing/TRIPAWY/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
+        <entry key="..\:/CSED/Courses/ITI-Mansoura/Testing/TRIPAWY/app/src/main/res/layout/activity_splash.xml" value="0.25416666666666665" />
+        <entry key="..\:/CSED/Courses/ITI-Mansoura/Testing/TRIPAWY/app/src/main/res/layout/card_layout.xml" value="0.264" />
       </map>
     </option>
   </component>
