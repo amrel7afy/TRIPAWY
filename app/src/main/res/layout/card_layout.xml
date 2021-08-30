@@ -37,13 +37,14 @@
             card_view:layout_constraintStart_toEndOf="@+id/txtDate"
             card_view:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/btnEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageButton
+            android:id="@+id/btnMore"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="24dp"
-            android:text="@string/edit"
+            app:srcCompat="@drawable/ic_baseline_more_vert_24"
+            android:backgroundTint="@color/white"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintHorizontal_bias="1.0"
             card_view:layout_constraintStart_toEndOf="@+id/txtTime"

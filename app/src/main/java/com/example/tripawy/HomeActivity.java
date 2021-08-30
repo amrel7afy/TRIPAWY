@@ -31,6 +31,10 @@ private ActivityHomeBinding binding;
             @Override
             public void onClick(View view) {
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
+                /**
+                 * On click the floating point button the add trip dialogfragment pop up
+                 */
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 AddNewTripFragment newFragment = new AddNewTripFragment();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -38,6 +42,7 @@ private ActivityHomeBinding binding;
                 transaction.add(android.R.id.content, newFragment).addToBackStack(null).commit();
             }
         });
+
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
