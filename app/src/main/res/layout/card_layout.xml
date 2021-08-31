@@ -51,7 +51,7 @@
             card_view:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txtTitle"
+            android:id="@+id/txtName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -70,7 +70,7 @@
             android:text="@string/from"
             android:textSize="20sp"
             card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@+id/txtTitle" />
+            card_view:layout_constraintTop_toBottomOf="@+id/txtName" />
 
         <TextView
             android:id="@+id/txtTo"
