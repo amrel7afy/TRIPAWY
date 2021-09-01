@@ -15,9 +15,6 @@
             android:label="@string/title_activity_home"
             android:theme="@style/Theme.TRIPAWY.NoActionBar" />
         <activity
-            android:name=".MainActivity"
-            android:exported="true" />
-        <activity
             android:name=".SplashActivity"
             android:exported="true" >
             <intent-filter>
