@@ -40,4 +40,5 @@
     <string name="option_4">Cancel</string>
     <string name="add">Add</string>
     <string name="add_trip">ADD Trip</string>
+    <string name="status">Status</string>
 </resources>
