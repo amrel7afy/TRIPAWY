@@ -1,5 +1,6 @@
 package com.example.tripawy;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
@@ -35,11 +36,8 @@ private ActivityHomeBinding binding;
                 /**
                  * On click the floating point button the add trip dialogfragment pop up
                  */
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                AddNewTripFragment newFragment = new AddNewTripFragment();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                transaction.add(android.R.id.content, newFragment).addToBackStack(null).commit();
+                Intent intent = new Intent(HomeActivity.this,AddNewTripActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -3,9 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@android:color/white"
     android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".AddNewTripActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -24,7 +26,8 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/ic_baseline_close_24"
-                app:tint="@color/white" />
+                app:tint="@color/white"
+                android:onClick="close"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -45,6 +48,7 @@
                 android:text="@string/add"
                 android:textColor="@android:color/white"
                 android:background="?attr/selectableItemBackgroundBorderless"
+                android:onClick="add"
                 />
 
         </LinearLayout>
@@ -152,6 +156,7 @@
                     app:icon="@drawable/ic_baseline_date_range_24"
                     app:iconPadding="20dp"
                     app:strokeColor="@color/purple_700"
+                    android:onClick="pickDate"
                     />
 
                 <Button
@@ -166,6 +171,7 @@
                     app:icon="@drawable/ic_baseline_access_time_24"
                     app:iconPadding="20dp"
                     app:strokeColor="@color/purple_700"
+                    android:onClick="pickTime"
                     />
             </LinearLayout>
 

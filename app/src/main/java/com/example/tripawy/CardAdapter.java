@@ -14,11 +14,11 @@ import java.util.ArrayList;
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.Viewholder> {
 
     private Context context;
-    private ArrayList<CardData> cardDataArrayList;
+    private ArrayList<Trip> tripArrayList;
 
-    public CardAdapter(Context context, ArrayList<CardData> cardDataArrayList) {
+    public CardAdapter(Context context, ArrayList<Trip> tripArrayList) {
         this.context = context;
-        this.cardDataArrayList = cardDataArrayList;
+        this.tripArrayList = tripArrayList;
     }
 
     @NonNull
@@ -31,10 +31,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.Viewholder> {
 
     @Override
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
-        CardData data = cardDataArrayList.get(position);
-        holder.getTxtName().setText(data.getTripName());
-        holder.getTxtDate().setText(data.getDate().toString());
-        holder.getTxtTime().setText(data.getTime().toString());
+        Trip data = tripArrayList.get(position);
+        holder.getTxtName().setText(data.getName());
+        holder.getTxtDate().setText(data.getDate()+"");
+        holder.getTxtTime().setText(data.getTime()+"");
         holder.getTxtFrom().setText(data.getFrom());
         holder.getTxtTo().setText(data.getTo());
     }
