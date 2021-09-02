@@ -15,7 +15,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.concurrent.Executors;
 
 public class AddNewTripActivity extends AppCompatActivity {
 
@@ -118,6 +120,23 @@ public class AddNewTripActivity extends AppCompatActivity {
     }
 
     public void add(View v) {
+        ArrayList<String> notes = new ArrayList<>();
+        notes.add("sfd");
+        // to insert item
+        Executors.newSingleThreadExecutor().execute(() -> {
+            RoomDB.getTrips(getApplication()).insert(
+                    new Trip(
+                            editTxtTripName.getText().toString(),
+                            30L,
+                            6,
+                            TripState.UPCOMING.name(),
+                            TripType.ONE_WAY.name(),
+                            editTxtStartPoint.getText().toString(),
+                            editTxtEndPoint.getText().toString(),
+                            notes
+                    )
+            );
+        });
         finish();
     }
 

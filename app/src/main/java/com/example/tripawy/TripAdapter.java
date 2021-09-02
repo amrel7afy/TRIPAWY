@@ -7,16 +7,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class CardAdapter extends RecyclerView.Adapter<CardAdapter.Viewholder> {
+public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
 
     private Context context;
-    private ArrayList<Trip> tripArrayList;
+    private LiveData<List<Trip>> tripArrayList;
 
-    public CardAdapter(Context context, ArrayList<Trip> tripArrayList) {
+    public TripAdapter(Context context, LiveData<List<Trip>> tripArrayList) {
         this.context = context;
         this.tripArrayList = tripArrayList;
     }
@@ -31,7 +33,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.Viewholder> {
 
     @Override
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
-        Trip data = tripArrayList.get(position);
+        Trip data = tripArrayList.getValue().get(position);
         holder.getTxtName().setText(data.getName());
         holder.getTxtDate().setText(data.getDate()+"");
         holder.getTxtTime().setText(data.getTime()+"");
@@ -41,7 +43,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.Viewholder> {
 
     @Override
     public int getItemCount() {
-        return 0;
+        return tripArrayList.getValue().size();
     }
 
     public class Viewholder extends RecyclerView.ViewHolder {
