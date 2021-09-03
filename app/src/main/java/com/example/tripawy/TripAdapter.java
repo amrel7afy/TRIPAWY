@@ -10,7 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
@@ -35,10 +38,26 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
         Trip data = tripArrayList.getValue().get(position);
         holder.getTxtName().setText(data.getName());
-        holder.getTxtDate().setText(data.getDate()+"");
-        holder.getTxtTime().setText(data.getTime()+"");
+        holder.getTxtDate().setText(convertDate(data.getDate()));
+        holder.getTxtTime().setText(convertTime(data.getTime()));
         holder.getTxtFrom().setText(data.getFrom());
         holder.getTxtTo().setText(data.getTo());
+    }
+
+    //Convert Date From Long To String
+    private String convertDate(Long dateLong){
+        Date date=new Date(dateLong);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+        String dateText = sdf.format(date);
+        return dateText;
+    }
+
+    //Convert Time From Long To String
+    private String convertTime(Long timeLong){
+        Date date=new Date(timeLong);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm a");
+        String timeText = sdf.format(date);
+        return timeText;
     }
 
     @Override

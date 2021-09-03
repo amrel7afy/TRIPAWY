@@ -15,8 +15,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
 
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.Executors;
 
 public class AddNewTripActivity extends AppCompatActivity {
@@ -33,6 +37,7 @@ public class AddNewTripActivity extends AppCompatActivity {
     private RadioButton radioButtonRepeat;
     private RadioButton radioButtonType;
     private int year, month, dayOfMonth, hour, minute;
+    private long dateLong, timeLong;
 
 
     @Override
@@ -50,8 +55,8 @@ public class AddNewTripActivity extends AppCompatActivity {
         hour = calendar.get(Calendar.HOUR_OF_DAY);
         minute = calendar.get(Calendar.MINUTE);
 
-       updateTime(hour,minute);
-        btn_datePicker.setText(dayOfMonth + "/" + month + "/" + year);
+        updateTime(hour, minute);
+        updateDate(year, month, dayOfMonth);
 
 
     }
@@ -74,7 +79,7 @@ public class AddNewTripActivity extends AppCompatActivity {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        btn_datePicker.setText(day + "/" + (month + 1) + "/" + year);
+                        updateDate(year, month, day);
 
                     }
                 }, year, month, dayOfMonth);
@@ -95,8 +100,40 @@ public class AddNewTripActivity extends AppCompatActivity {
         timePickerDialog.show();
     }
 
+    private void updateDate(int year, int month, int day) {
+        String years = String.valueOf(year);
+        String months = "";
+        String days = "";
+
+        if ((month + 1) >= 10) {
+            months = String.valueOf(month + 1);
+        } else {
+            months = "0" + (month + 1);
+        }
+
+        if (day >= 10) {
+            days = String.valueOf(day);
+        } else {
+            days = "0" + day;
+        }
+        String dateString = null;
+        try {
+            dateString = days + "/" + months + "/" + years;
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            Date date = sdf.parse(dateString);
+
+            dateLong = date.getTime();
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        btn_datePicker.setText(dateString);
+    }
+
     private void updateTime(int hour, int minute) {
         String timeSet = "";
+        int hour24 = hour;
         if (hour > 12) {
             hour -= 12;
             timeSet = "PM";
@@ -115,20 +152,33 @@ public class AddNewTripActivity extends AppCompatActivity {
         } else {
             minutes = String.valueOf(minute);
         }
-        btn_timePicker.setText(hour + ":" + minutes + " " + timeSet);
+
+        String timeString = null;
+        try {
+            timeString = hour + ":" + minutes + " " + timeSet;
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+
+            Date date = sdf.parse(timeString);
+
+            timeLong = date.getTime();
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        btn_timePicker.setText(timeString);
 
     }
 
     public void add(View v) {
         ArrayList<String> notes = new ArrayList<>();
-        notes.add("sfd");
         // to insert item
         Executors.newSingleThreadExecutor().execute(() -> {
             RoomDB.getTrips(getApplication()).insert(
                     new Trip(
                             editTxtTripName.getText().toString(),
-                            30L,
-                            6,
+                            dateLong,
+                            timeLong,
                             TripState.UPCOMING.name(),
                             TripType.ONE_WAY.name(),
                             editTxtStartPoint.getText().toString(),
