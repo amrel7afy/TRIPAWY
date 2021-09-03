@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 public class Converters {
 
-    //In order to Deal With Arraylists in Database
     @TypeConverter
     public static ArrayList<String> fromString(String value) {
         Type listType = new TypeToken<ArrayList<String>>() {}.getType();
