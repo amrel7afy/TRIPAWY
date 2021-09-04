@@ -4,21 +4,30 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Toast;
+
+import com.example.tripawy.ui.home.HomeViewModel;
 import com.google.android.material.navigation.NavigationView;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+
+import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.tripawy.databinding.ActivityHomeBinding;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private AppBarConfiguration mAppBarConfiguration;
+private AppBarConfiguration mAppBarConfiguration;
 private ActivityHomeBinding binding;
+private HomeViewModel mHomeViewModel;
+private TripAdapter mTripAdapter;
+private RecyclerView recyclerViewHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +37,7 @@ private ActivityHomeBinding binding;
      setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarHome.toolbar);
+        recyclerViewHome =findViewById(R.id.recyclerViewHome);
         binding.appBarHome.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,6 +62,24 @@ private ActivityHomeBinding binding;
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_home);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        //swipe to delete the trip from home
+
+//    new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT|
+//            ItemTouchHelper.RIGHT) {
+//        @Override
+//        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+//            return false;
+//        }
+//
+//        @Override
+//        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+//
+//            //mHomeViewModel.delete(mTripAdapter.getTripAt(viewHolder.getAdapterPosition()));
+//
+//            Toast.makeText(getApplicationContext(),"Swipped",Toast.LENGTH_SHORT).show();
+//        }
+//    }).attachToRecyclerView(recyclerViewHome);
     }
 
     @Override

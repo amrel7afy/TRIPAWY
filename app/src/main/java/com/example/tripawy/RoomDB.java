@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.room.Room;
 
 public class RoomDB {
+
     static AppDatabase db = null;
     public static TripDao getTrips(Context application) {
         if (db == null) {

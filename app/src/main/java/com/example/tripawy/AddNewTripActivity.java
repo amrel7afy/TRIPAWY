@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.sql.Time;
 import java.text.ParseException;
@@ -38,7 +39,8 @@ public class AddNewTripActivity extends AppCompatActivity {
     private RadioButton radioButtonType;
     private int year, month, dayOfMonth, hour, minute;
     private long dateLong, timeLong;
-
+    String timeString = null;
+    String dateString = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +118,7 @@ public class AddNewTripActivity extends AppCompatActivity {
         } else {
             days = "0" + day;
         }
-        String dateString = null;
+
         try {
             dateString = days + "/" + months + "/" + years;
 
@@ -153,7 +155,7 @@ public class AddNewTripActivity extends AppCompatActivity {
             minutes = String.valueOf(minute);
         }
 
-        String timeString = null;
+     //timeString
         try {
             timeString = hour + ":" + minutes + " " + timeSet;
             SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
@@ -171,10 +173,13 @@ public class AddNewTripActivity extends AppCompatActivity {
     }
 
     public void add(View v) {
+        if(!checktripcomponents()){
         ArrayList<String> notes = new ArrayList<>();
         // to insert item
+        checktripcomponents();
         Executors.newSingleThreadExecutor().execute(() -> {
             RoomDB.getTrips(getApplication()).insert(
+
                     new Trip(
                             editTxtTripName.getText().toString(),
                             dateLong,
@@ -187,11 +192,22 @@ public class AddNewTripActivity extends AppCompatActivity {
                     )
             );
         });
-        finish();
+        finish();}
     }
 
     public void close(View v) {
         finish();
+    }
+
+    //make a method that check if components are empty
+    public boolean checktripcomponents(){
+        if(editTxtTripName.getText().toString().isEmpty()
+                ||editTxtStartPoint.getText().toString().isEmpty()
+                || editTxtEndPoint.getText().toString().isEmpty()){
+            Toast.makeText(getApplicationContext(),"Please fill all fields",Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return false;
     }
 
 }

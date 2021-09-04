@@ -1,9 +1,11 @@
 package com.example.tripawy;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -42,6 +44,15 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
         holder.getTxtTime().setText(convertTime(data.getTime()));
         holder.getTxtFrom().setText(data.getFrom());
         holder.getTxtTo().setText(data.getTo());
+
+        holder.getNotes().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(context,AddNoteActivity.class);
+                context.startActivity(intent);
+            }
+        });
+
     }
 
     //Convert Date From Long To String
@@ -65,13 +76,15 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
         return tripArrayList.getValue().size();
     }
 
-    public class Viewholder extends RecyclerView.ViewHolder {
+    public  static class Viewholder extends RecyclerView.ViewHolder {
         private View itemView;
         private TextView txtDate;
         private TextView txtTime;
         private TextView txtName;
         private TextView txtFrom;
         private TextView txtTo;
+        private Button note;
+
 
         public Viewholder(@NonNull View itemView) {
             super(itemView);
@@ -113,6 +126,17 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
             return txtTo;
         }
 
+        public Button getNotes() {
+            if (note == null) {
+                note = itemView.findViewById(R.id.btnNotes);
+            }
+            return note;
+        }
+
 
     }
+    //get the selected item from data base
+//    public Trip getTripAt(int pos){
+//        return tripArrayList.getValue().get(pos);
+//    }
 }
