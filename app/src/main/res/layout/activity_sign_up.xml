@@ -41,16 +41,38 @@
             android:text="@string/sign_in"
             android:textColor="@color/light_blue_900" />
     </LinearLayout>
-
     <EditText
-        android:id="@+id/editTextUserNameSU"
+        android:id="@+id/editTextFirstNameSU"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/userName"
+        android:hint="@string/firstName"
         android:inputType="textPersonName"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="20dp"
+        />
+
+    <EditText
+        android:id="@+id/editTextLastNameSU"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/lastName"
+        android:inputType="textPersonName"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        />
+
+
+    <EditText
+        android:id="@+id/editTextEmailSU"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/email"
+        android:inputType="textPersonName"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
        />
 
     <EditText

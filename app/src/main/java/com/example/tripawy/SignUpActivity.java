@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +26,8 @@ public class SignUpActivity extends AppCompatActivity {
     private TextView signIn;
     private EditText editTextUserName;
     private EditText editTextPassword;
+    private EditText editTextFirstName;
+    private EditText editTextLastName;
     private FirebaseAuth mAuth;
 
     @Override
@@ -39,8 +42,10 @@ public class SignUpActivity extends AppCompatActivity {
     private void initializeComponent() {
         btn_signUp = findViewById(R.id.btn_signUp);
         signIn = findViewById(R.id.txtsignIn);
-        editTextUserName = findViewById(R.id.editTextUserNameSU);
+        editTextUserName = findViewById(R.id.editTextEmailSU);
         editTextPassword = findViewById(R.id.editTextPasswordSU);
+        editTextFirstName = findViewById(R.id.editTextFirstNameSU);
+        editTextLastName = findViewById(R.id.editTextLastNameSU);
     }
 
     public void signIn(View v) {
@@ -49,13 +54,14 @@ public class SignUpActivity extends AppCompatActivity {
         finish();
     }
 
-    public void setBtn_signUp(View v){
+    public void setBtn_signUp(View v) {
+        saveData();
         mAuth.createUserWithEmailAndPassword(editTextUserName.getText().toString(), editTextPassword.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            //FirebaseUser user = mAuth.getCurrentUser();
                             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                             startActivity(intent);
                             finish();
@@ -65,6 +71,16 @@ public class SignUpActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private void saveData(){
+        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        String firstName = editTextFirstName.getText().toString();
+        String lastName = editTextLastName.getText().toString();
+        editor.putString("FirstName", firstName);
+        editor.putString("LastName", lastName);
+        editor.commit();
     }
 
 }

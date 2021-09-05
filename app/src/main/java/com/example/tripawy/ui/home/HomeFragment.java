@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tripawy.HomeActivity;
 import com.example.tripawy.R;
 import com.example.tripawy.RoomDB;
 import com.example.tripawy.Trip;
@@ -25,6 +26,7 @@ import com.example.tripawy.TripAdapter;
 import com.example.tripawy.databinding.FragmentHomeBinding;
 
 import java.util.List;
+import java.util.concurrent.Executors;
 
 public class HomeFragment extends Fragment {
 
@@ -58,6 +60,28 @@ public class HomeFragment extends Fragment {
                 recyclerViewHome.setAdapter(cardAdapter);
             }
         });
+
+        //swipe to delete the trip from home
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT |
+                ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+                //mHomeViewModel.delete(mTripAdapter.getTripAt(viewHolder.getAdapterPosition()));
+                Executors.newSingleThreadExecutor().execute(() -> {
+                    RoomDB.getTrips(getContext()).delete(listLiveData.getValue().get(viewHolder.getAdapterPosition()));
+                });
+                Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
+            }
+
+
+        }).attachToRecyclerView(recyclerViewHome);
+
     }
 
     @Override

@@ -3,32 +3,54 @@ package com.example.tripawy;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripawy.databinding.ActivityHomeBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.util.List;
 import java.util.concurrent.Executors;
 
 public class HomeActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityHomeBinding binding;
-    private RecyclerView recyclerViewHome;
+    public RecyclerView recyclerViewHome;
+    private ImageView imagePhoto;
+    private TextView txtEmail;
+    private TextView txtUserName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,23 +86,41 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        //swipe to delete the trip from home
+      /*  SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        String firstName = prefs.getString("FirstName", "null");
+        String lastName = prefs.getString("LastName", "null");
 
-//    new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT|
-//            ItemTouchHelper.RIGHT) {
-//        @Override
-//        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-//            return false;
-//        }
-//
-//        @Override
-//        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-//
-//            //mHomeViewModel.delete(mTripAdapter.getTripAt(viewHolder.getAdapterPosition()));
-//
-//            Toast.makeText(getApplicationContext(),"Swipped",Toast.LENGTH_SHORT).show();
-//        }
-//    }).attachToRecyclerView(recyclerViewHome);
+        txtUserName=hview.findViewById(R.id.UserName);
+        txtUserName.setText(firstName+" "+lastName);*/
+
+
+
+        /****
+         * Access user Data
+         */
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // Name, email address, and profile photo Url
+            String name = user.getDisplayName();
+            String email = user.getEmail();
+            Uri photoUrl = user.getPhotoUrl();
+
+            View hview = navigationView.getHeaderView(0);
+            imagePhoto = hview.findViewById(R.id.photo);
+            txtEmail = hview.findViewById(R.id.email);
+
+            txtEmail.setText(email);
+
+            //imagePhoto.setImageResource(R.drawable.user);
+
+            // Check if user's email is verified
+            boolean emailVerified = user.isEmailVerified();
+
+            // The user's ID, unique to the Firebase project. Do NOT use this value to
+            // authenticate with your backend server, if you have one. Use
+            // FirebaseUser.getIdToken() instead.
+            String uid = user.getUid();
+        }
     }
 
     @Override
@@ -107,12 +147,12 @@ public class HomeActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 //Check Whether the recycler view is empty or not
-                                if (recyclerViewHome.getAdapter().getItemCount() !=0){
+                                if (recyclerViewHome.getAdapter().getItemCount() != 0) {
                                     Executors.newSingleThreadExecutor().execute(() -> {
                                         RoomDB.getTrips(getApplication()).deleteAllUpcoming();
                                     });
-                                }else{
-                                    Toast.makeText(HomeActivity.this,"No Trips To Delete",Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(HomeActivity.this, "No Trips To Delete", Toast.LENGTH_LONG).show();
                                 }
                                 alertDialog.dismiss();
                             }

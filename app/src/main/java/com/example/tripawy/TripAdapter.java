@@ -4,9 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
-import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,18 +12,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-//
-
-
-
 
 import androidx.annotation.NonNull;
-
-import com.example.tripawy.helper.HelperMethods;
-import com.example.tripawy.pinnednotificatoin.MyService;
-//
-
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -71,26 +58,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
             }
         });
 
-
-        holder.getStart().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-startService();
-
-                if (Build.VERSION.SDK_INT >= 23) {
-                    if (!Settings.canDrawOverlays(v.getContext())) {
-                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                                Uri.parse("package:" + v.getContext().getPackageName()));
-                     v.getContext().startActivity(intent);
-                    } else HelperMethods.startScheduling(v.getContext());
-
-                } else {
-                    HelperMethods.startScheduling(v.getContext());
-                }
-            }
-        });
-
-
         holder.getBtnMore().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,12 +91,6 @@ startService();
         });
 
 
-    }
-
-    private void startService() {
-        Intent serviceIntent = new Intent(context, MyService.class);
-        serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android");
-        ContextCompat.startForegroundService(context, serviceIntent);
     }
 
     private void AlertDialog(String message, int index,View v) {
@@ -211,8 +172,6 @@ startService();
         private TextView txtTo;
         private Button note;
         private ImageButton btnMore;
-        Button btn_start;
-
 
 
         public Viewholder(@NonNull View itemView) {
@@ -260,12 +219,6 @@ startService();
                 note = itemView.findViewById(R.id.btnNotes);
             }
             return note;
-        }
-        public Button getStart() {
-            if (btn_start == null) {
-                btn_start = itemView.findViewById(R.id.btnStart);
-            }
-            return btn_start;
         }
 
         public ImageButton getBtnMore() {

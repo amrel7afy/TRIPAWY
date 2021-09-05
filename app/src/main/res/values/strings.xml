@@ -66,4 +66,7 @@
     <string name="deleteAll">Delete All</string>
     <string name="menu_history">History</string>
     <string name="edit_trip">Edit Trip</string>
+    <string name="email">Email</string>
+
+    <string name="api_key">AIzaSyCGljGwBBFfH2L79A9lseHKM_wKVj1Bc-c</string>
 </resources>
