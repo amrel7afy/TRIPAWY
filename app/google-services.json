@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "934432099429",
+    "project_id": "angelic-bond-323616",
+    "storage_bucket": "angelic-bond-323616.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:934432099429:android:6d8c5c3e43f270c4174a8c",
+        "android_client_info": {
+          "package_name": "com.example.tripawy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "934432099429-4qhiro1aqackti355rlrmmhv839vb7o9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrZY95sMxzb75gh7_nKqmMr-ZbYzXpQNc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "934432099429-4qhiro1aqackti355rlrmmhv839vb7o9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

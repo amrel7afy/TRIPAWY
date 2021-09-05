@@ -21,6 +21,12 @@ public interface TripDao {
     @Query("SELECT * FROM trip where tripState != 'UPCOMING' ")
     LiveData<List<Trip>> getAllHistory();
 
+    @Query("DELETE  FROM trip where tripState == 'UPCOMING' ")
+    void deleteAllUpcoming();
+
+    @Query("DELETE  FROM trip where tripState != 'UPCOMING' ")
+    void deleteAllHistory();
+
     @Insert
     void insertAll(Trip... trips);
 

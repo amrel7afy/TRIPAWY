@@ -54,4 +54,16 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="login_with_google">login with google</string>
+    <string name="sign_in">Sign In</string>
+    <string name="userName">User Name</string>
+    <string name="password">Password</string>
+    <string name="newUser">New User ?</string>
+    <string name="create_an_account">Create an account</string>
+    <string name="already_an_user">Already an user ?</string>
+    <string name="firstName">First Name</string>
+    <string name="lastName">Last Name</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="deleteAll">Delete All</string>
+    <string name="menu_history">History</string>
+    <string name="edit_trip">Edit Trip</string>
 </resources>

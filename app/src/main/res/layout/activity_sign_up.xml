@@ -4,81 +4,85 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".SignUpActivity">
 
 
     <EditText
-        android:id="@+id/editTextUserName"
+        android:id="@+id/editTextUserNameSU"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="92dp"
         android:ems="10"
         android:hint="@string/userName"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/editTextPassword"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextPasswordSU"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/editTextPassword"
+        android:id="@+id/editTextPasswordSU"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="148dp"
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/btn_signIn"
-        app:layout_constraintEnd_toEndOf="@+id/editTextUserName"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/editTextUserName" />
+        app:layout_constraintBottom_toTopOf="@+id/btn_signUp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextUserNameSU"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/editTextUserNameSU" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sign_in"
+        android:layout_marginBottom="40dp"
+        android:text="@string/sign_up"
         android:textColor="@color/black"
-        android:textSize="30dp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/newUser"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.858" />
 
     <Button
-        android:id="@+id/btn_signIn"
+        android:id="@+id/btn_signUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="240dp"
-        android:text="@string/sign_in"
+        android:layout_marginBottom="316dp"
+        android:onClick="setBtn_signUp"
+        android:text="@string/sign_up"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/editTextPassword"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="@+id/editTextPassword"
-        android:onClick="signIn"/>
+        app:layout_constraintEnd_toEndOf="@+id/editTextPasswordSU"
+        app:layout_constraintHorizontal_bias="0.53"
+        app:layout_constraintStart_toStartOf="@+id/editTextPasswordSU" />
 
     <TextView
         android:id="@+id/newUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="12dp"
         android:layout_marginBottom="52dp"
-        android:text="@string/newUser"
+        android:text="@string/already_an_user"
         android:textColor="@color/black"
         android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextUserName"
-        app:layout_constraintStart_toStartOf="@+id/editTextUserName" />
+        app:layout_constraintBottom_toTopOf="@+id/editTextUserNameSU"
+        app:layout_constraintStart_toStartOf="@+id/editTextUserNameSU" />
 
     <TextView
-        android:id="@+id/createNew"
+        android:id="@+id/txtsignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="52dp"
-        android:background="#00FFFFFF"
-        android:text="@string/create_an_account"
-        android:textColor="@color/purple_500"
-        app:layout_constraintBottom_toTopOf="@+id/editTextUserName"
-        app:layout_constraintEnd_toEndOf="@+id/editTextUserName"
-        app:layout_constraintHorizontal_bias="0.466"
-        app:layout_constraintStart_toEndOf="@+id/newUser"
-        android:onClick="createNew"/>
+        android:onClick="signIn"
+        android:text="@string/sign_in"
+        android:textColor="@color/light_blue_900"
+        app:layout_constraintBottom_toTopOf="@+id/editTextUserNameSU"
+        app:layout_constraintEnd_toEndOf="@+id/editTextUserNameSU"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toEndOf="@+id/newUser" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

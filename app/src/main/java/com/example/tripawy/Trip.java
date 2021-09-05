@@ -5,6 +5,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 enum TripState {
     UPCOMING,
     DONE,
-    CANCELLED
+    CANCLED
 }
 
 enum TripType {
@@ -28,7 +29,7 @@ enum TripRepeat {
 }
 
 @Entity
-public class Trip {
+public class Trip implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String name;

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.tripawy">
 
     <application
@@ -10,12 +11,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TRIPAWY">
         <activity
-            android:name=".LoginActivity"
+            android:name=".EditTripActivity"
             android:exported="true" />
         <activity
-            android:name=".ui.login.LoginActivity"
-            android:exported="true"
-            android:label="@string/title_activity_login" />
+            android:name=".SignUpActivity"
+            android:exported="true" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true" />
         <activity
             android:name=".AddNoteActivity"
             android:exported="true" />

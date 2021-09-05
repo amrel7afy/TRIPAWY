@@ -5,11 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.gallery.GalleryFragment" >
+    tools:context=".ui.history.HistoryFragment" >
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewGallery"
+        android:id="@+id/recyclerViewHistory"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
