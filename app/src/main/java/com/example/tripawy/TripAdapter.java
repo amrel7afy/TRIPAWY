@@ -23,8 +23,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.example.tripawy.helper.HelperMethods;
+import com.example.tripawy.pinnednotificatoin.MyService;
 //
 
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -73,6 +75,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
         holder.getStart().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+startService();
+
                 if (Build.VERSION.SDK_INT >= 23) {
                     if (!Settings.canDrawOverlays(v.getContext())) {
                         Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
@@ -120,6 +124,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
         });
 
 
+    }
+
+    private void startService() {
+        Intent serviceIntent = new Intent(context, MyService.class);
+        serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android");
+        ContextCompat.startForegroundService(context, serviceIntent);
     }
 
     private void AlertDialog(String message, int index,View v) {

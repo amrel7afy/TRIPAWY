@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -14,9 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TRIPAWY">
         <service
-            android:name=".AlarmService"
+            android:name=".pinnednotificatoin.MyService"
             android:enabled="true"
             android:exported="true"></service>
+        <service
+            android:name=".AlarmService"
+            android:enabled="true"
+            android:exported="true" />
 
         <activity
             android:name=".EditTripActivity"

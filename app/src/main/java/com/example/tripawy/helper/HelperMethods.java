@@ -112,6 +112,7 @@ public class HelperMethods {
                 .setMessage("Reminder for your trip!!!")
                 .setPositiveButton("start", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        //TODO  intent to go to google maps
 
                         dialog.dismiss();
                         onButton.onClicked();
