@@ -51,13 +51,13 @@ public class HomeActivity extends AppCompatActivity {
     private TextView txtEmail;
     private TextView txtUserName;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
 
         setSupportActionBar(binding.appBarHome.toolbar);
         recyclerViewHome = findViewById(R.id.recyclerViewHome);
@@ -101,6 +101,7 @@ public class HomeActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // Name, email address, and profile photo Url
+
             String name = user.getDisplayName();
             String email = user.getEmail();
             Uri photoUrl = user.getPhotoUrl();
