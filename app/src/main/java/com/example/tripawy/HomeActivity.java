@@ -1,9 +1,11 @@
 package com.example.tripawy;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -173,6 +176,17 @@ public class HomeActivity extends AppCompatActivity {
 
         return true;
     }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        if (ContextCompat.checkSelfPermission(HomeActivity.this,
+//                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager
+//                .PERMISSION_GRANTED) {
+//            getLastLocation();
+//        } else {
+//            askLocationPermission();
+//        }
+//    }
 
     @Override
     public boolean onSupportNavigateUp() {
