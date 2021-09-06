@@ -26,6 +26,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.tripawy.AlarmService;
+import com.example.tripawy.Trip;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -37,12 +38,12 @@ import java.util.List;
 import java.util.Locale;
 
 public class HelperMethods extends Activity {
-    Context context;
+  static   Context context;
     public static String ACTION_PENDING = "action";
-    int LOCATION_ACCESS_CODE = 1000;
-    FusedLocationProviderClient fusedLocationProviderClient;
-   static Double lat,longs;
-    static String stringLat,stringLong;
+   public static int LOCATION_ACCESS_CODE = 1000;
+   public static FusedLocationProviderClient fusedLocationProviderClient;
+   public static Double lat,longs;
+    public static String stringLat,stringLong;
 
     public static void showCalender(Context context,
                                     String title, final TextView text_view_data, final DateModel data1) {
@@ -77,7 +78,6 @@ public class HelperMethods extends Activity {
                 date.setHours(selectedHour);
                 date.setMinutes(selectedMinute);
                 date.setSeconds(0);
-
             }
         }, 5,
                 50,
@@ -94,14 +94,17 @@ public class HelperMethods extends Activity {
         spinner.setAdapter(adapter);
     }
 
-    public static void startScheduling(Context context) {
-        int timeInSec = 1;
+    public static void startScheduling(Context context, Trip trip) {
+
+        long time = trip.getTime();
+        long timeInSec = time - System.currentTimeMillis();
 
         Intent intent = new Intent(context, AlarmService.class);
+        intent.putExtra("Trip",trip);
         PendingIntent pendingIntent = PendingIntent.getService(
                 context.getApplicationContext(), 234, intent, 0);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (timeInSec * 1000), pendingIntent);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +  (timeInSec), pendingIntent);
         Toast.makeText(context, "Alarm set to after " + timeInSec + " seconds", Toast.LENGTH_LONG).show();
     }
 
@@ -114,7 +117,7 @@ public class HelperMethods extends Activity {
         void onClicked();
     }
 
-    public void getLastLocation() {
+    public static void getLastLocation() {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission( context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -139,11 +142,11 @@ public class HelperMethods extends Activity {
             }
         });
     }
-    private void askLocationPermission(){
+    public static void askLocationPermission(){
         if(ContextCompat.checkSelfPermission(context,
                 Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager
                 .PERMISSION_GRANTED){
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this,
+            if(ActivityCompat.shouldShowRequestPermissionRationale((Activity) context,
                     Manifest.permission.ACCESS_FINE_LOCATION)){
                 Log.d("MianActivity","askLocationPermission:");
                 ActivityCompat.requestPermissions((Activity) context,new String []{Manifest.permission.ACCESS_FINE_LOCATION}
@@ -155,14 +158,6 @@ public class HelperMethods extends Activity {
 
         }
     }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == LOCATION_ACCESS_CODE){
-            if (grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
-                getLastLocation();
-            }
-        }
-    }
+
 
 }

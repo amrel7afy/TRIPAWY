@@ -86,17 +86,17 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
         holder.getStart().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               startService(data);
                 if (Build.VERSION.SDK_INT >= 23) {
                     if (!Settings.canDrawOverlays(v.getContext())) {
                         Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                                 Uri.parse("package:" + v.getContext().getPackageName()));
                      v.getContext().startActivity(intent);
-                    } else HelperMethods.startScheduling(v.getContext());
+                    } else HelperMethods.startScheduling(v.getContext(),data);
 
                 } else {
-                    HelperMethods.startScheduling(v.getContext());
+                    HelperMethods.startScheduling(v.getContext(),data);
                 }
+                startService(data);
             }
         });
 

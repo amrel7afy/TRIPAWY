@@ -17,9 +17,17 @@ import androidx.annotation.Nullable;
 
 import com.example.tripawy.helper.HelperMethods;
 
-public class AlarmService extends Service {
+import java.util.concurrent.Executors;
 
+public class AlarmService extends Service {
+    Trip trip;
     private MediaPlayer mp;
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        //trip= (Trip) intent.getSerializableExtra("Trip");
+        return super.onStartCommand(intent, flags, startId);
+    }
 
     @Override
     public void onCreate() {
@@ -28,8 +36,8 @@ public class AlarmService extends Service {
         mp = MediaPlayer.create(this.getApplicationContext(), R.raw.alarm);
         try{mp.start();
             showAlertDialog(this, this::stopSelf);}catch (Exception e){
-            e.getMessage();
         }
+
 
 
     }
@@ -47,7 +55,7 @@ public class AlarmService extends Service {
                 .setPositiveButton("start", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         //TODO  intent to go to google maps
-                        Uri gmmIntentUri = Uri.parse("geo:12.2222,22.2222");
+                        Uri gmmIntentUri = Uri.parse("geo:12.22222,22.22222");
                         Intent intent =new Intent(Intent.ACTION_VIEW,gmmIntentUri);
                         intent.setPackage("com.google.android.apps.maps");
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -59,7 +67,10 @@ public class AlarmService extends Service {
                 })
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
+                        /*trip.setTripState("CANCLED");
+                        Executors.newSingleThreadExecutor().execute(() -> {
+                            RoomDB.getTrips(getApplicationContext()).update(trip);
+                        });*/
                         dialog.dismiss();
                         onButton.onClicked();
                     }

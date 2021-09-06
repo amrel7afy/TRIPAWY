@@ -17,6 +17,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.sql.Time;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class AddNewTripActivity extends AppCompatActivity {
     private RadioGroup radioGroupType;
     private RadioButton radioButtonRepeat;
     private RadioButton radioButtonType;
+    private Calendar c;
 
     private int year, month, dayOfMonth, hour, minute;
     private long dateLong, timeLong;
@@ -57,8 +59,6 @@ public class AddNewTripActivity extends AppCompatActivity {
         dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
         hour = calendar.get(Calendar.HOUR_OF_DAY);
         minute = calendar.get(Calendar.MINUTE);
-
-        updateTime(hour, minute);
         updateDate(year, month, dayOfMonth);
 
 
@@ -96,7 +96,12 @@ public class AddNewTripActivity extends AppCompatActivity {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay,
                                           int minute) {
-                        updateTime(hourOfDay, minute);
+                         c = Calendar.getInstance();
+                        c.set(Calendar.HOUR_OF_DAY,hourOfDay);
+                        c.set(Calendar.MINUTE,minute);
+                        c.set(Calendar.SECOND,0);
+                        updateTime(c);
+
                     }
                 }, hour, minute, false);
 
@@ -135,41 +140,9 @@ public class AddNewTripActivity extends AppCompatActivity {
         btn_datePicker.setText(dateString);
     }
 
-    private void updateTime(int hour, int minute) {
-        String timeSet = "";
-        if (hour > 12) {
-            hour -= 12;
-            timeSet = "PM";
-        } else if (hour == 0) {
-            hour += 12;
-            timeSet = "AM";
-        } else if (hour == 12) {
-            timeSet = "PM";
-        } else {
-            timeSet = "AM";
-        }
-
-        String minutes = "";
-        if (minute < 10) {
-            minutes = "0" + minute;
-        } else {
-            minutes = String.valueOf(minute);
-        }
-
-     //timeString
-        try {
-            timeString = hour + ":" + minutes + " " + timeSet;
-            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
-
-            Date date = sdf.parse(timeString);
-
-            timeLong = date.getTime();
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        btn_timePicker.setText(timeString);
+    private void updateTime(Calendar c) {
+        String timeSet = DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
+        btn_timePicker.setText(timeSet);
 
     }
 
@@ -179,11 +152,10 @@ public class AddNewTripActivity extends AppCompatActivity {
         // to insert item
         Executors.newSingleThreadExecutor().execute(() -> {
             RoomDB.getTrips(getApplication()).insert(
-
                     new Trip(
                             editTxtTripName.getText().toString(),
                             dateLong,
-                            timeLong,
+                            c.getTimeInMillis(),
                             TripState.UPCOMING.name(),
                             TripType.ONE_WAY.name(),
                             editTxtStartPoint.getText().toString(),
