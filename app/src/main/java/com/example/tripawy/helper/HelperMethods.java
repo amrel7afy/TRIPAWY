@@ -1,7 +1,5 @@
 package com.example.tripawy.helper;
 
-import static android.content.Context.ALARM_SERVICE;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -10,14 +8,11 @@ import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.net.Uri;
-import android.os.Build;
+
 import android.util.Log;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Spinner;
@@ -31,8 +26,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.tripawy.AlarmService;
-import com.example.tripawy.RoomDB;
-import com.example.tripawy.Trip;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -42,7 +35,6 @@ import java.text.DecimalFormatSymbols;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.Executors;
 
 public class HelperMethods extends Activity {
     Context context;

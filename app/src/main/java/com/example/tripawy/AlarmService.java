@@ -1,25 +1,17 @@
 package com.example.tripawy;
 
 
-
-
-
-import android.accessibilityservice.AccessibilityService;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.PixelFormat;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+
 import android.view.WindowManager;
-import android.view.accessibility.AccessibilityEvent;
-import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
 
