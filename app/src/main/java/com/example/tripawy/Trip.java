@@ -5,10 +5,15 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.IgnoreExtraProperties;
+
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 enum TripState {
     UPCOMING,
@@ -29,6 +34,7 @@ enum TripRepeat {
 }
 
 @Entity
+@IgnoreExtraProperties
 public class Trip implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -139,5 +145,21 @@ public class Trip implements Serializable {
 
     public void setNotes(ArrayList<String> notes) {
         this.notes = notes;
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("id", id);
+        result.put("name", name);
+        result.put("date", date);
+        result.put("time", time);
+        result.put("tripState", tripState);
+        result.put("tripType", tripType);
+        result.put("from",from);
+        result.put("to",to);
+        result.put("notes",notes);
+
+        return result;
     }
 }

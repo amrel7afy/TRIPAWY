@@ -20,8 +20,15 @@ import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.Executors;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -71,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 FirebaseUser user = mAuth.getCurrentUser();
+                                getData(user);
                                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -81,9 +89,41 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         }
                     });
+
+
         }
 
 
     }
+
+    private void getData(FirebaseUser user) {
+        // Read from the database
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = db.getReference("Users");
+
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                if (dataSnapshot.hasChild(user.getUid())) {
+                    for (int i = 0; i < dataSnapshot.child(user.getUid()).child("Trips").getChildrenCount(); i++) {
+                        Trip trip = (Trip) dataSnapshot.child(user.getUid()).child("Trips").child(String.valueOf(i)).getValue(Trip.class);
+                        Executors.newSingleThreadExecutor().execute(() -> {
+                            RoomDB.getTrips(getApplication()).insert(trip);
+                        });
+                    }
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Toast.makeText(getApplicationContext(), "Failed 2", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
 
 }

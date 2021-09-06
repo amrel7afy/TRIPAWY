@@ -38,12 +38,12 @@ import java.util.List;
 import java.util.Locale;
 
 public class HelperMethods extends Activity {
-  static   Context context;
+    Context context;
     public static String ACTION_PENDING = "action";
-   public static int LOCATION_ACCESS_CODE = 1000;
-   public static FusedLocationProviderClient fusedLocationProviderClient;
-   public static Double lat,longs;
-    public static String stringLat,stringLong;
+    int LOCATION_ACCESS_CODE = 1000;
+    FusedLocationProviderClient fusedLocationProviderClient;
+    static Double lat, longs;
+    static String stringLat, stringLong;
 
     public static void showCalender(Context context,
                                     String title, final TextView text_view_data, final DateModel data1) {
@@ -78,6 +78,7 @@ public class HelperMethods extends Activity {
                 date.setHours(selectedHour);
                 date.setMinutes(selectedMinute);
                 date.setSeconds(0);
+
             }
         }, 5,
                 50,
@@ -94,17 +95,17 @@ public class HelperMethods extends Activity {
         spinner.setAdapter(adapter);
     }
 
-    public static void startScheduling(Context context, Trip trip) {
-
-        long time = trip.getTime();
+    public static void startScheduling(Context context, Trip data) {
+        long time = data.getTime();
+        long date = data.getDate();
+        long dateInSec = date - System.currentTimeMillis();
         long timeInSec = time - System.currentTimeMillis();
 
         Intent intent = new Intent(context, AlarmService.class);
-        intent.putExtra("Trip",trip);
         PendingIntent pendingIntent = PendingIntent.getService(
                 context.getApplicationContext(), 234, intent, 0);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +  (timeInSec), pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (timeInSec + dateInSec), pendingIntent);
         Toast.makeText(context, "Alarm set to after " + timeInSec + " seconds", Toast.LENGTH_LONG).show();
     }
 
@@ -113,12 +114,12 @@ public class HelperMethods extends Activity {
 
     }
 
-    public interface OnButton{
+    public interface OnButton {
         void onClicked();
     }
 
-    public static void getLastLocation() {
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission( context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+    public void getLastLocation() {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -132,32 +133,42 @@ public class HelperMethods extends Activity {
         locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
-                if (location !=null){
-                    lat=location.getLatitude();
-                    longs=location.getLongitude();
-                    stringLat=Double.toString(lat);
-                    stringLong =Double.toString(longs);
+                if (location != null) {
+                    lat = location.getLatitude();
+                    longs = location.getLongitude();
+                    stringLat = Double.toString(lat);
+                    stringLong = Double.toString(longs);
 
                 }
             }
         });
     }
-    public static void askLocationPermission(){
-        if(ContextCompat.checkSelfPermission(context,
-                Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager
-                .PERMISSION_GRANTED){
-            if(ActivityCompat.shouldShowRequestPermissionRationale((Activity) context,
-                    Manifest.permission.ACCESS_FINE_LOCATION)){
-                Log.d("MianActivity","askLocationPermission:");
-                ActivityCompat.requestPermissions((Activity) context,new String []{Manifest.permission.ACCESS_FINE_LOCATION}
-                        ,LOCATION_ACCESS_CODE);
-            }else{
-                ActivityCompat.requestPermissions((Activity) context,new String []{Manifest.permission.ACCESS_FINE_LOCATION}
-                        ,LOCATION_ACCESS_CODE);
+
+    private void askLocationPermission() {
+        if (ContextCompat.checkSelfPermission(context,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager
+                .PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                Log.d("MianActivity", "askLocationPermission:");
+                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}
+                        , LOCATION_ACCESS_CODE);
+            } else {
+                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}
+                        , LOCATION_ACCESS_CODE);
             }
 
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LOCATION_ACCESS_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLastLocation();
+            }
+        }
+    }
 
 }

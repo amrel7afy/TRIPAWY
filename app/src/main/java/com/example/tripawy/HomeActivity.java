@@ -1,13 +1,10 @@
 package com.example.tripawy;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
@@ -15,14 +12,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import androidx.lifecycle.LifecycleOwner;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -34,7 +30,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.tripawy.databinding.ActivityHomeBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.Nullable;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 
 public class HomeActivity extends AppCompatActivity {
@@ -48,6 +59,7 @@ public class HomeActivity extends AppCompatActivity {
     private TextView txtEmail;
     private TextView txtUserName;
 
+    private List<Trip> tripList;
 
     public static boolean fragmentFlag;
 
@@ -118,20 +130,21 @@ public class HomeActivity extends AppCompatActivity {
             // authenticate with your backend server, if you have one. Use
             // FirebaseUser.getIdToken() instead.
             String uid = user.getUid();
-        }
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                int id = menuItem.getItemId();
-                if (id == R.id.btn_sync) {
-                    sync();
+
+            navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                    int id = menuItem.getItemId();
+                    if (id == R.id.btn_sync) {
+                        sync(uid);
+                    }
+                    NavigationUI.onNavDestinationSelected(menuItem, navController);
+                    drawer.closeDrawer(GravityCompat.START);
+                    return true;
                 }
-                NavigationUI.onNavDestinationSelected(menuItem, navController);
-                drawer.closeDrawer(GravityCompat.START);
-                return true;
-            }
-        });
+            });
+        }
 
 
 
@@ -219,11 +232,45 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        LiveData<List<Trip>> listLiveData = RoomDB.getTrips(getApplicationContext()).getAll();
+        listLiveData.observe((LifecycleOwner) this, new Observer<List<Trip>>() {
+            @Override
+            public void onChanged(List<Trip> trips) {
+                tripList = trips;
+
+            }
+        });
 
     }
 
-    public void sync() {
-        
+    public void sync(String uid) {
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = db.getReference("Users");
+
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // inside the method of on Data change we are setting
+                // our object class to our database reference.
+                // data base reference will sends data to firebase.
+                //Converters.fromArrayList(tripList.getValue().get(0).getNotes());
+
+                    databaseReference.child(uid).child("Trips").setValue(tripList);
+
+                // after adding this data we are showing toast message.
+                Toast.makeText(HomeActivity.this, "data added", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // if the data is not added or it is cancelled then
+                // we are displaying a failure toast message.
+                Toast.makeText(HomeActivity.this, "Fail to add data " + error, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
 
 

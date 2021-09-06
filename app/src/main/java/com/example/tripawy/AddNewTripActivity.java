@@ -34,16 +34,12 @@ public class AddNewTripActivity extends AppCompatActivity {
     private EditText editTxtTripName;
     private EditText editTxtStartPoint;
     private EditText editTxtEndPoint;
-    private RadioGroup radioGroupRepeat;
     private RadioGroup radioGroupType;
-    private RadioButton radioButtonRepeat;
     private RadioButton radioButtonType;
-    private Calendar c;
+    private String tripType;
 
     private int year, month, dayOfMonth, hour, minute;
-    private long dateLong, timeLong;
-    String timeString = null;
-    String dateString = null;
+    private Calendar c, cDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +55,10 @@ public class AddNewTripActivity extends AppCompatActivity {
         dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
         hour = calendar.get(Calendar.HOUR_OF_DAY);
         minute = calendar.get(Calendar.MINUTE);
-        updateDate(year, month, dayOfMonth);
+
+
+        updateTime(calendar);
+        updateDate(calendar);
 
 
     }
@@ -70,7 +69,6 @@ public class AddNewTripActivity extends AppCompatActivity {
         editTxtTripName = findViewById(R.id.editTxtTripName);
         editTxtStartPoint = findViewById(R.id.editTxtStartPoint);
         editTxtEndPoint = findViewById(R.id.editTxtEndPoint);
-        radioGroupRepeat = findViewById(R.id.radioGroupRepeat);
         radioGroupType = findViewById(R.id.radioGroupType);
         btn_add = findViewById(R.id.btn_add);
         btn_close = findViewById(R.id.btn_close);
@@ -82,7 +80,11 @@ public class AddNewTripActivity extends AppCompatActivity {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        updateDate(year, month, day);
+                        cDate = Calendar.getInstance();
+                        cDate.set(Calendar.YEAR, year);
+                        cDate.set(Calendar.MONTH, month);
+                        cDate.set(Calendar.DAY_OF_MONTH, day);
+                        updateDate(cDate);
 
                     }
                 }, year, month, dayOfMonth);
@@ -96,75 +98,50 @@ public class AddNewTripActivity extends AppCompatActivity {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay,
                                           int minute) {
-                         c = Calendar.getInstance();
-                        c.set(Calendar.HOUR_OF_DAY,hourOfDay);
-                        c.set(Calendar.MINUTE,minute);
-                        c.set(Calendar.SECOND,0);
+                        c = Calendar.getInstance();
+                        c.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        c.set(Calendar.MINUTE, minute);
+                        c.set(Calendar.SECOND, 0);
                         updateTime(c);
-
                     }
                 }, hour, minute, false);
 
         timePickerDialog.show();
     }
 
-    private void updateDate(int year, int month, int day) {
-        String years = String.valueOf(year);
-        String months = "";
-        String days = "";
-
-        if ((month + 1) >= 10) {
-            months = String.valueOf(month + 1);
-        } else {
-            months = "0" + (month + 1);
-        }
-
-        if (day >= 10) {
-            days = String.valueOf(day);
-        } else {
-            days = "0" + day;
-        }
-
-        try {
-            dateString = days + "/" + months + "/" + years;
-
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Date date = sdf.parse(dateString);
-
-            dateLong = date.getTime();
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
+    private void updateDate(Calendar cDate) {
+        String dateString = DateFormat.getDateInstance().format(cDate.getTime());
         btn_datePicker.setText(dateString);
     }
 
     private void updateTime(Calendar c) {
-        String timeSet = DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
-        btn_timePicker.setText(timeSet);
-
+        String timeString = DateFormat.getTimeInstance().format(c.getTime());
+        btn_timePicker.setText(timeString);
     }
 
     public void add(View v) {
-        if(!checktripcomponents()){
-        ArrayList<String> notes = new ArrayList<>();
-        // to insert item
-        Executors.newSingleThreadExecutor().execute(() -> {
-            RoomDB.getTrips(getApplication()).insert(
-                    new Trip(
-                            editTxtTripName.getText().toString(),
-                            dateLong,
-                            c.getTimeInMillis(),
-                            TripState.UPCOMING.name(),
-                            TripType.ONE_WAY.name(),
-                            editTxtStartPoint.getText().toString(),
-                            editTxtEndPoint.getText().toString(),
-                            notes
-                    )
-            );
-        });
-        finish();}
+
+
+        if (!checkTripComponents()) {
+            ArrayList<String> notes = new ArrayList<>();
+            // to insert item
+            Executors.newSingleThreadExecutor().execute(() -> {
+                RoomDB.getTrips(getApplication()).insert(
+
+                        new Trip(
+                                editTxtTripName.getText().toString(),
+                                cDate.getTimeInMillis(),
+                                c.getTimeInMillis(),
+                                TripState.UPCOMING.name(),
+                                tripType,
+                                editTxtStartPoint.getText().toString(),
+                                editTxtEndPoint.getText().toString(),
+                                notes
+                        )
+                );
+            });
+            finish();
+        }
     }
 
     public void close(View v) {
@@ -172,14 +149,25 @@ public class AddNewTripActivity extends AppCompatActivity {
     }
 
     //make a method that check if components are empty
-    public boolean checktripcomponents(){
-        if(editTxtTripName.getText().toString().isEmpty()
-                ||editTxtStartPoint.getText().toString().isEmpty()
-                || editTxtEndPoint.getText().toString().isEmpty()){
-            Toast.makeText(getApplicationContext(),"Please fill all fields",Toast.LENGTH_SHORT).show();
+    private boolean checkTripComponents() {
+        int selectedId = radioGroupType.getCheckedRadioButtonId();
+        radioButtonType = (RadioButton) findViewById(selectedId);
+        if (editTxtTripName.getText().toString().isEmpty()
+                || editTxtStartPoint.getText().toString().isEmpty()
+                || editTxtEndPoint.getText().toString().isEmpty() || radioButtonType == null) {
+            Toast.makeText(getApplicationContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
             return true;
         }
+        setType();
         return false;
+    }
+
+    private void setType() {
+        if(radioButtonType.getId() == R.id.oneWay){
+            tripType=TripType.ONE_WAY.name();
+        }else{
+            tripType=TripType.ROUND.name();
+        }
     }
 
 }
