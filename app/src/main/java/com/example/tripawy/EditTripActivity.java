@@ -143,7 +143,6 @@ public class EditTripActivity extends AppCompatActivity {
 
     private void updateTime(int hour, int minute) {
         String timeSet = "";
-        int hour24 = hour;
         if (hour > 12) {
             hour -= 12;
             timeSet = "PM";

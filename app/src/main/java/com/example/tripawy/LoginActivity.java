@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private Button btn_signIn;
     private TextView createNew;
-    private EditText editTextUserName;
+    private EditText editTextEmail;
     private EditText editTextPassword;
     private FirebaseAuth mAuth;
 
@@ -43,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
     private void initializeComponent() {
         btn_signIn = findViewById(R.id.btn_signIn);
         createNew = findViewById(R.id.createNew);
-        editTextUserName = findViewById(R.id.editTextUserName);
+        editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
     }
 
@@ -53,24 +54,34 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    public void signIn(View v){
-        mAuth.signInWithEmailAndPassword(editTextUserName.getText().toString(),editTextPassword.getText().toString() )
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+    public void signIn(View v) {
+
+        if (editTextEmail.getText().toString().isEmpty() && editTextPassword.getText().toString().isEmpty()) {
+            editTextEmail.setError("Email is required!");
+            editTextPassword.setError("Password is required!");
+        } else if (editTextPassword.getText().toString().isEmpty()) {
+            editTextPassword.setError("Password is required!");
+        } else if (editTextEmail.getText().toString().isEmpty()) {
+            editTextEmail.setError("Email is required!");
+        } else {
+            mAuth.signInWithEmailAndPassword(editTextEmail.getText().toString(), editTextPassword.getText().toString())
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Toast.makeText(LoginActivity.this, "Wrong Email and Password",
+                                        Toast.LENGTH_LONG).show();
+                            }
                         }
-                    }
-                });
+                    });
+        }
 
 
     }

@@ -69,4 +69,10 @@
     <string name="email">Email</string>
 
     <string name="api_key">AIzaSyCGljGwBBFfH2L79A9lseHKM_wKVj1Bc-c</string>
+    <string name="no_upcoming_trips">No Upcoming Trips</string>
+    <string name="no_history_trips">No History Trips</string>
+    <string name="state">State</string>
+    <string name="add_notes">ADD Notes</string>
+    <string name="sync">Sync</string>
+    <string name="log_out">Log out</string>
 </resources>

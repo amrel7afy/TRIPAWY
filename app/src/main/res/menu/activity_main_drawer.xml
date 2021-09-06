@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="single"
+        android:id="@+id/group1">
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_baseline_menu_24"
@@ -12,9 +13,22 @@
             android:id="@+id/nav_history"
             android:icon="@drawable/ic_baseline_history_edu_24"
             android:title="@string/menu_history" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
     </group>
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/group2">
+
+        <item
+        android:id="@+id/btn_sync"
+        android:checkable="true"
+        android:icon="@drawable/ic_baseline_sync_24"
+        android:title="@string/sync" />
+        <item
+            android:id="@+id/btn_logout"
+            android:checkable="true"
+            android:icon="@drawable/ic_baseline_exit_to_app_24"
+            android:title="@string/log_out" />
+    </group>
+
+
 </menu>

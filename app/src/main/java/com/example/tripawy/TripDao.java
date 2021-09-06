@@ -7,6 +7,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -26,6 +27,9 @@ public interface TripDao {
 
     @Query("DELETE  FROM trip where tripState != 'UPCOMING' ")
     void deleteAllHistory();
+
+    @Query("SELECT * FROM trip")
+    List<Trip> getAllList();
 
     @Insert
     void insertAll(Trip... trips);

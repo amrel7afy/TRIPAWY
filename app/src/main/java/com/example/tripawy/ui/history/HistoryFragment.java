@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -28,6 +30,7 @@ public class HistoryFragment extends Fragment {
 
     private FragmentHistoryBinding binding;
     private RecyclerView recyclerViewHistory;
+    private TextView txtNoTrips;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -37,6 +40,7 @@ public class HistoryFragment extends Fragment {
 
 
         recyclerViewHistory = root.findViewById(R.id.recyclerViewHistory);
+        txtNoTrips=root.findViewById(R.id.NoTripsHistory);
 
 
         return root;
@@ -50,11 +54,16 @@ public class HistoryFragment extends Fragment {
         otherListLiveData.observe(this, new Observer<List<Trip>>() {
             @Override
             public void onChanged(List<Trip> trips) {
-                TripAdapter cardAdapter = new TripAdapter(getContext(), otherListLiveData);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-                recyclerViewHistory.setLayoutManager(linearLayoutManager);
-                recyclerViewHistory.setAdapter(cardAdapter);
-            }
+                if (otherListLiveData.getValue().size()==0){
+                    txtNoTrips.setVisibility(View.VISIBLE);
+                }else{
+                    txtNoTrips.setVisibility(View.GONE);
+                }
+                    TripAdapter cardAdapter = new TripAdapter(getContext(), otherListLiveData);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                    recyclerViewHistory.setLayoutManager(linearLayoutManager);
+                    recyclerViewHistory.setAdapter(cardAdapter);
+                }
         });
 
         //swipe to delete the trip from home
@@ -76,6 +85,13 @@ public class HistoryFragment extends Fragment {
 
 
         }).attachToRecyclerView(recyclerViewHistory);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        HomeActivity.fragmentFlag=false;
+
     }
 
     @Override

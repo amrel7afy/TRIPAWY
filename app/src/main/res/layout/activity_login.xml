@@ -46,14 +46,14 @@
 
 
     <EditText
-        android:id="@+id/editTextUserName"
+        android:id="@+id/editTextEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/userName"
-        android:inputType="textPersonName"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="40dp"/>
+        android:layout_marginBottom="40dp"
+        android:ems="10"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress" />
 
     <EditText
         android:id="@+id/editTextPassword"

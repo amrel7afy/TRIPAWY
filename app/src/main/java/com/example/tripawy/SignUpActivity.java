@@ -25,7 +25,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private Button btn_signUp;
     private TextView signIn;
-    private EditText editTextUserName;
+    private EditText editTextEmail;
     private EditText editTextPassword;
     private EditText editTextFirstName;
     private EditText editTextLastName;
@@ -44,7 +44,7 @@ public class SignUpActivity extends AppCompatActivity {
     private void initializeComponent() {
         btn_signUp = findViewById(R.id.btn_signUp);
         signIn = findViewById(R.id.txtsignIn);
-        editTextUserName = findViewById(R.id.editTextEmailSU);
+        editTextEmail = findViewById(R.id.editTextEmailSU);
         editTextPassword = findViewById(R.id.editTextPasswordSU);
         editTextFirstName = findViewById(R.id.editTextFirstNameSU);
         editTextLastName = findViewById(R.id.editTextLastNameSU);
@@ -57,33 +57,89 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void setBtn_signUp(View v) {
-        mAuth.createUserWithEmailAndPassword(editTextUserName.getText().toString(), editTextPassword.getText().toString())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            String Name = editTextFirstName.getText().toString() +
-                                    " " + editTextLastName.getText().toString();
-                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(Name).build();
-                            user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                                        startActivity(intent);
-                                        finish();
-                                    }
-                                }
-                            });
+        if (editTextFirstName.getText().toString().isEmpty() && editTextLastName.getText().toString().isEmpty()
+                && editTextEmail.getText().toString().isEmpty() && editTextPassword.getText().toString().isEmpty()) {
+            editTextFirstName.setError("First Name is required!");
+            editTextLastName.setError("Last Name is required!");
+            editTextEmail.setError("Email is required!");
+            editTextPassword.setError("Password is required!");
+        } else if (editTextFirstName.getText().toString().isEmpty() && editTextLastName.getText().toString().isEmpty()
+                && editTextEmail.getText().toString().isEmpty()) {
+            editTextFirstName.setError("First Name is required!");
+            editTextLastName.setError("Last Name is required!");
+            editTextEmail.setError("Email is required!");
+        } else if (editTextFirstName.getText().toString().isEmpty() && editTextEmail.getText().toString().isEmpty()
+                && editTextPassword.getText().toString().isEmpty()) {
+            editTextFirstName.setError("First Name is required!");
+            editTextEmail.setError("Email is required!");
+            editTextPassword.setError("Password is required!");
+        } else if (editTextFirstName.getText().toString().isEmpty() && editTextLastName.getText().toString().isEmpty()
+                && editTextPassword.getText().toString().isEmpty()) {
+            editTextFirstName.setError("First Name is required!");
+            editTextLastName.setError("Last Name is required!");
+            editTextPassword.setError("Password is required!");
+        } else if (editTextLastName.getText().toString().isEmpty() && editTextEmail.getText().toString().isEmpty()
+                && editTextPassword.getText().toString().isEmpty()) {
+            editTextLastName.setError("Last Name is required!");
+            editTextEmail.setError("Email is required!");
+            editTextPassword.setError("Password is required!");
+        } else if (editTextFirstName.getText().toString().isEmpty() && editTextLastName.getText().toString().isEmpty()) {
+            editTextFirstName.setError("First Name is required!");
+            editTextLastName.setError("Last Name is required!");
+        } else if (editTextFirstName.getText().toString().isEmpty() && editTextEmail.getText().toString().isEmpty()) {
+            editTextFirstName.setError("First Name is required!");
+            editTextEmail.setError("Email is required!");
 
-                        } else {
-                            Toast.makeText(SignUpActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+        } else if (editTextFirstName.getText().toString().isEmpty() && editTextPassword.getText().toString().isEmpty()) {
+            editTextFirstName.setError("First Name is required!");
+            editTextPassword.setError("Password is required!");
+        } else if (editTextLastName.getText().toString().isEmpty() && editTextEmail.getText().toString().isEmpty()) {
+            editTextLastName.setError("Last Name is required!");
+            editTextEmail.setError("Email is required!");
+        } else if (editTextLastName.getText().toString().isEmpty() && editTextPassword.getText().toString().isEmpty()) {
+            editTextLastName.setError("Last Name is required!");
+            editTextPassword.setError("Password is required!");
+        } else if (editTextEmail.getText().toString().isEmpty() && editTextPassword.getText().toString().isEmpty()) {
+            editTextEmail.setError("Email is required!");
+            editTextPassword.setError("Password is required!");
+        } else if (editTextFirstName.getText().toString().isEmpty()) {
+            editTextFirstName.setError("First Name is required!");
+        } else if (editTextLastName.getText().toString().isEmpty()) {
+            editTextLastName.setError("Last Name is required!");
+        } else if (editTextEmail.getText().toString().isEmpty()) {
+            editTextEmail.setError("Email is required!");
+        } else if (editTextPassword.getText().toString().isEmpty()) {
+            editTextPassword.setError("Password is required!");
+        } else {
+            mAuth.createUserWithEmailAndPassword(editTextEmail.getText().toString(), editTextPassword.getText().toString())
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                String Name = editTextFirstName.getText().toString() +
+                                        " " + editTextLastName.getText().toString();
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(Name).build();
+                                user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    }
+                                });
+
+                            } else {
+                                Toast.makeText(SignUpActivity.this, "Wrong Email Address",
+                                        Toast.LENGTH_LONG).show();
+                            }
                         }
-                    }
-                });
+                    });
+        }
+
     }
 
 

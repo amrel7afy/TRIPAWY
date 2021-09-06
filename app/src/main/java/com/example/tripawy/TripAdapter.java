@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
@@ -26,7 +28,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
 
     private final Context context;
     private final LiveData<List<Trip>> tripArrayList;
-    private Trip data;
 
     public TripAdapter(Context context, LiveData<List<Trip>> tripArrayList) {
         this.context = context;
@@ -43,18 +44,28 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
 
     @Override
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
-        data = tripArrayList.getValue().get(position);
+        Trip data = tripArrayList.getValue().get(position);
         holder.getTxtName().setText(data.getName());
         holder.getTxtDate().setText(convertDate(data.getDate()));
         holder.getTxtTime().setText(convertTime(data.getTime()));
         holder.getTxtFrom().setText(data.getFrom());
         holder.getTxtTo().setText(data.getTo());
+        holder.getTxtState().setText(data.getTripState());
 
-        holder.getNotes().setOnClickListener(new View.OnClickListener() {
+        holder.getNote().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, AddNoteActivity.class);
-                context.startActivity(intent);
+                String notes = "";
+                for (int i = 0; i < data.getNotes().size(); i++) {
+                    notes += (i + 1) + ") " + data.getNotes().get(i) + "\n";
+                }
+                final AlertDialog alertDialogNotes = new AlertDialog.Builder(context)
+                        .setCancelable(true)
+                        .setTitle("Notes")
+                        .setMessage(notes)
+                        .create();
+                alertDialogNotes.setCanceledOnTouchOutside(true);
+                alertDialogNotes.show();
             }
         });
 
@@ -68,18 +79,20 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.add_notes:
-
+                                Intent intentNotes = new Intent(v.getContext(), AddNoteActivity.class);
+                                intentNotes.putExtra("Trip", data);
+                                context.startActivity(intentNotes);
                                 return true;
                             case R.id.edit:
-                                Intent intent = new Intent(v.getContext(),EditTripActivity.class);
-                                intent.putExtra("trip", data);
-                                context.startActivity(intent);
+                                Intent intentEdit = new Intent(v.getContext(), EditTripActivity.class);
+                                intentEdit.putExtra("trip", data);
+                                context.startActivity(intentEdit);
                                 return true;
                             case R.id.delete:
-                                AlertDialog("Do you want to remove this Trip?", 3,v);
+                                AlertDialog("Do you want to remove this Trip?", 3, v, data);
                                 return true;
                             case R.id.cancel:
-                                AlertDialog("Do you want to cancel this Trip?", 4,v);
+                                AlertDialog("Do you want to cancel this Trip?", 4, v, data);
                                 return true;
                             default:
                                 return false;
@@ -93,7 +106,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
 
     }
 
-    private void AlertDialog(String message, int index,View v) {
+    private void AlertDialog(String message, int index, View v, Trip data) {
         final AlertDialog alertDialogDelete = new AlertDialog.Builder(v.getContext())
                 .setCancelable(false)
                 .setTitle("Confirmation")
@@ -122,6 +135,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
                                     RoomDB.getTrips(context.getApplicationContext()).update(data);
                                 });
                                 break;
+                            default:
+                                return;
                         }
 
                         alertDialogDelete.dismiss();
@@ -170,6 +185,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
         private TextView txtName;
         private TextView txtFrom;
         private TextView txtTo;
+        private TextView txtState;
         private Button note;
         private ImageButton btnMore;
 
@@ -214,7 +230,14 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
             return txtTo;
         }
 
-        public Button getNotes() {
+        public TextView getTxtState() {
+            if (txtState == null) {
+                txtState = itemView.findViewById(R.id.txtState);
+            }
+            return txtState;
+        }
+
+        public Button getNote() {
             if (note == null) {
                 note = itemView.findViewById(R.id.btnNotes);
             }
