@@ -86,12 +86,7 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-      /*  SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-        String firstName = prefs.getString("FirstName", "null");
-        String lastName = prefs.getString("LastName", "null");
 
-        txtUserName=hview.findViewById(R.id.UserName);
-        txtUserName.setText(firstName+" "+lastName);*/
 
 
 
@@ -109,8 +104,10 @@ public class HomeActivity extends AppCompatActivity {
             View hview = navigationView.getHeaderView(0);
             imagePhoto = hview.findViewById(R.id.photo);
             txtEmail = hview.findViewById(R.id.email);
+            txtUserName=hview.findViewById(R.id.UserName);
 
             txtEmail.setText(email);
+            txtUserName.setText(name);
 
             //imagePhoto.setImageResource(R.drawable.user);
 
