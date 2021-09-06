@@ -86,7 +86,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
         holder.getStart().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               startService();
+               startService(data);
                 if (Build.VERSION.SDK_INT >= 23) {
                     if (!Settings.canDrawOverlays(v.getContext())) {
                         Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
@@ -137,7 +137,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
 
 
     }
-    public void startService() {
+    public void startService(Trip data) {
         Intent serviceIntent = new Intent(context, MyService.class);
         serviceIntent.putExtra("inputExtra", "You are waiting for trip  "+ data.getName()+"");
         ContextCompat.startForegroundService(context, serviceIntent);
