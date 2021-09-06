@@ -2,6 +2,7 @@ package com.example.tripawy.helper;
 
 import static android.content.Context.ALARM_SERVICE;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -11,7 +12,11 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -21,9 +26,16 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.example.tripawy.AlarmService;
 import com.example.tripawy.RoomDB;
 import com.example.tripawy.Trip;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -32,8 +44,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Executors;
 
-public class HelperMethods {
+public class HelperMethods extends Activity {
+    Context context;
     public static String ACTION_PENDING = "action";
+    int LOCATION_ACCESS_CODE = 1000;
+    FusedLocationProviderClient fusedLocationProviderClient;
+   static Double lat,longs;
+    static String stringLat,stringLong;
 
     public static void showCalender(Context context,
                                     String title, final TextView text_view_data, final DateModel data1) {
@@ -96,43 +113,64 @@ public class HelperMethods {
         Toast.makeText(context, "Alarm set to after " + timeInSec + " seconds", Toast.LENGTH_LONG).show();
     }
 
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
     public interface OnButton{
         void onClicked();
     }
-    public static void showAlertDialog(Context context, OnButton onButton) {
-        int LAYOUT_FLAG;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
-        } else {
-            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
+
+    public void getLastLocation() {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission( context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+
         }
-        AlertDialog alertDialog = new AlertDialog.Builder(context)
-                .setTitle("TRIPAWY")
-                .setCancelable(false)
-                .setMessage("Reminder for your trip!!!")
-                .setPositiveButton("start", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        //TODO  intent to go to google maps
+        Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
+        locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location !=null){
+                    lat=location.getLatitude();
+                    longs=location.getLongitude();
+                    stringLat=Double.toString(lat);
+                    stringLong =Double.toString(longs);
 
-                        dialog.dismiss();
-                        onButton.onClicked();
-                    }
-                })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        dialog.dismiss();
-                        onButton.onClicked();
-                    }
-                }).setNeutralButton("snooze", new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        dialog.dismiss();
-                        onButton.onClicked();
-                    }
-                }).create();
-        alertDialog.getWindow().setType(LAYOUT_FLAG);
-        alertDialog.show();
+                }
+            }
+        });
     }
+    private void askLocationPermission(){
+        if(ContextCompat.checkSelfPermission(context,
+                Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager
+                .PERMISSION_GRANTED){
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)){
+                Log.d("MianActivity","askLocationPermission:");
+                ActivityCompat.requestPermissions((Activity) context,new String []{Manifest.permission.ACCESS_FINE_LOCATION}
+                        ,LOCATION_ACCESS_CODE);
+            }else{
+                ActivityCompat.requestPermissions((Activity) context,new String []{Manifest.permission.ACCESS_FINE_LOCATION}
+                        ,LOCATION_ACCESS_CODE);
+            }
+
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LOCATION_ACCESS_CODE){
+            if (grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                getLastLocation();
+            }
+        }
+    }
+
 }
