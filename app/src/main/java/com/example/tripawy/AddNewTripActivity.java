@@ -1,11 +1,15 @@
 package com.example.tripawy;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.Fragment;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -16,13 +20,10 @@ import android.widget.RadioGroup;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.sql.Time;
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.concurrent.Executors;
 
 public class AddNewTripActivity extends AppCompatActivity {
@@ -41,6 +42,7 @@ public class AddNewTripActivity extends AppCompatActivity {
     private int year, month, dayOfMonth, hour, minute;
     private Calendar c, cDate;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,12 +58,10 @@ public class AddNewTripActivity extends AppCompatActivity {
         hour = calendar.get(Calendar.HOUR_OF_DAY);
         minute = calendar.get(Calendar.MINUTE);
 
-
-        updateTime(calendar);
-        updateDate(calendar);
-
-
     }
+
+
+
 
     private void initializeComponent() {
         btn_datePicker = findViewById(R.id.btnDatePicker);
@@ -154,7 +154,8 @@ public class AddNewTripActivity extends AppCompatActivity {
         radioButtonType = (RadioButton) findViewById(selectedId);
         if (editTxtTripName.getText().toString().isEmpty()
                 || editTxtStartPoint.getText().toString().isEmpty()
-                || editTxtEndPoint.getText().toString().isEmpty() || radioButtonType == null) {
+                || editTxtEndPoint.getText().toString().isEmpty() || radioButtonType == null
+                || btn_timePicker.getText().toString().isEmpty()|| btn_datePicker.getText().toString().isEmpty()) {
             Toast.makeText(getApplicationContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
             return true;
         }

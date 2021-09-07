@@ -127,53 +127,49 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/date"
+                    android:text="@string/start_details"
                     android:textSize="20dp"
                     android:textColor="@color/black"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/time"
-                    android:textSize="20dp"
-                    android:textColor="@color/black"
-                    android:layout_marginLeft="180dp"
-                    android:layout_marginBottom="20dp"/>
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:layout_marginBottom="20dp">
 
                 <Button
                     android:id="@+id/btnDatePicker"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="29/8/2021"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-                    app:iconGravity="end"
-                    app:icon="@drawable/ic_baseline_date_range_24"
-                    app:iconPadding="20dp"
-                    app:strokeColor="@color/purple_700"
+                    android:layout_marginStart="8dp"
                     android:onClick="pickDate"
-                    />
+                    app:icon="@drawable/ic_baseline_date_range_24"
+                    app:iconGravity="start"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:strokeColor="@color/purple_700" />
 
                 <Button
                     android:id="@+id/btnTimePicker"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="8:55:00 PM"
-                    android:layout_marginLeft="70dp"
-                    android:paddingRight="10dp"
-                    app:iconGravity="end"
-                    app:icon="@drawable/ic_baseline_access_time_24"
-                    app:iconPadding="20dp"
-                    app:strokeColor="@color/purple_700"
+                    android:layout_marginStart="80dp"
+                    android:layout_marginEnd="107dp"
                     android:onClick="pickTime"
-                    />
-            </LinearLayout>
+                    app:icon="@drawable/ic_baseline_access_time_24"
+                    app:iconGravity="start"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/btnDatePicker"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:strokeColor="@color/purple_700" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
                 android:layout_width="match_parent"

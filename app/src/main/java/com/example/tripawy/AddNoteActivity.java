@@ -65,6 +65,11 @@ public class AddNoteActivity extends AppCompatActivity {
     }
 
     public void save(View v) {
+        editTextNote = view1.findViewById(R.id.editTextNote);
+        if(editTextNote.getText().toString().isEmpty()){
+        }else{
+            arrayListNotes.add(editTextNote.getText().toString());
+        }
         trip.setNotes(arrayListNotes);
         Executors.newSingleThreadExecutor().execute(() -> {
             RoomDB.getTrips(this.getApplicationContext()).update(trip);

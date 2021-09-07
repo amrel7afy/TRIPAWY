@@ -75,4 +75,5 @@
     <string name="add_notes">ADD Notes</string>
     <string name="sync">Sync</string>
     <string name="log_out">Log out</string>
+    <string name="start_details">Start Details</string>
 </resources>

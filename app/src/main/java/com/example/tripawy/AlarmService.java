@@ -56,8 +56,10 @@ public class AlarmService extends Service {
                     public void onClick(DialogInterface dialog, int id) {
                         //TODO  intent to go to google maps
                         Uri gmmIntentUri = Uri.parse("geo:12.22222,22.22222");
-                        Intent intent =new Intent(Intent.ACTION_VIEW,gmmIntentUri);
-                        intent.setPackage("com.google.android.apps.maps");
+                        //Intent intent =new Intent(Intent.ACTION_VIEW,gmmIntentUri);
+                        //intent.setPackage("com.google.android.apps.maps");
+                        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                                Uri.parse("google.navigation:q=mansoura"));
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         if (intent.resolveActivity(getPackageManager()) != null) {
                             startActivity(intent);

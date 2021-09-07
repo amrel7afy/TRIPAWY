@@ -138,6 +138,8 @@ public class HomeActivity extends AppCompatActivity {
                     int id = menuItem.getItemId();
                     if (id == R.id.btn_sync) {
                         sync(uid);
+                    }else if(id == R.id.btn_logout){
+
                     }
                     NavigationUI.onNavDestinationSelected(menuItem, navController);
                     drawer.closeDrawer(GravityCompat.START);

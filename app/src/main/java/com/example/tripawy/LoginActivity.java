@@ -45,7 +45,6 @@ public class LoginActivity extends AppCompatActivity {
         initializeComponent();
         mAuth = FirebaseAuth.getInstance();
 
-
     }
 
     private void initializeComponent() {
