@@ -35,7 +35,7 @@ public class AddNewTripActivity extends AppCompatActivity {
 
     private Button btn_datePicker;
     private Button btn_timePicker;
-    private Button btn_add;
+    private ImageButton btn_add;
     private ImageButton btn_close;
     private EditText editTxtTripName;
     private EditText editTxtStartPoint;
@@ -116,12 +116,12 @@ public class AddNewTripActivity extends AppCompatActivity {
 
     private void updateDate(Calendar cDate) {
         String dateString = DateFormat.getDateInstance().format(cDate.getTime());
-        btn_datePicker.setText(dateString);
+        btn_datePicker.setText("Date\n"+dateString);
     }
 
     private void updateTime(Calendar c) {
         String timeString = DateFormat.getTimeInstance().format(c.getTime());
-        btn_timePicker.setText(timeString);
+        btn_timePicker.setText("Time\n"+timeString);
     }
 
     public void add(View v) {

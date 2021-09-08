@@ -84,16 +84,6 @@ public class AlarmService extends Service {
 
                     public void onClick(DialogInterface dialog, int id) {
                         HelperMethods.startService(context.getApplicationContext(),trip);
-                        /*repeating alarm
-                         AlarmManager alarmMgr;
-                         PendingIntent alarmIntent;
-                        alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-                        Intent intent = new Intent(context, AlarmService.class);
-                        alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
-                        alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-                        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, AddNewTripActivity.c.getTimeInMillis(),
-                                1000 * 60 , alarmIntent);
-*/
                             long seconds = 1000;
                             HelperMethods.startScheduling(context,trip,seconds);
                             onButton.onClicked();
