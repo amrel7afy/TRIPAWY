@@ -106,14 +106,17 @@ public class HelperMethods extends Activity {
 
          if(snoozeSeconds==0) {
              timeInSec = time - System.currentTimeMillis();
+             AlarmService.trip = data;
          }
-        Intent intent = new Intent(context, AlarmService.class);
-        AlarmService.trip = data;
-        PendingIntent pendingIntent = PendingIntent.getService(
-                context.getApplicationContext(), 234, intent, 0);
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + timeInSec+snoozeSeconds, pendingIntent);
-        Toast.makeText(context, "Alarm set to after " + timeInSec + " seconds", Toast.LENGTH_LONG).show();
+         if(timeInSec >=0){
+             Intent intent = new Intent(context, AlarmService.class);
+             PendingIntent pendingIntent = PendingIntent.getService(
+                     context.getApplicationContext(), 234, intent, 0);
+             AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+             alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + timeInSec+snoozeSeconds, pendingIntent);
+             Toast.makeText(context, "Alarm set to after " + timeInSec + " seconds", Toast.LENGTH_LONG).show();
+         }
+
     }
 
     public static void startService(Context context, Trip trip) {

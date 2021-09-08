@@ -18,8 +18,6 @@ import android.widget.TextView;
 //
 
 
-
-
 import androidx.annotation.NonNull;
 
 import com.example.tripawy.helper.HelperMethods;
@@ -62,6 +60,19 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
         holder.getTxtTo().setText(data.getTo());
         holder.getTxtState().setText(data.getTripState());
 
+        if (data.getTripState().equals(TripState.UPCOMING.name())) {
+            if (Build.VERSION.SDK_INT >= 23) {
+                if (!Settings.canDrawOverlays(context.getApplicationContext())) {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                            Uri.parse("package:" + context.getApplicationContext().getPackageName()));
+                    context.startActivity(intent);
+                } else HelperMethods.startScheduling(context.getApplicationContext(), data, 0);
+
+            } else {
+                HelperMethods.startScheduling(context.getApplicationContext(), data, 0);
+            }
+        }
+
 
         holder.getNote().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,15 +91,24 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
             }
         });
 
-        if(data.getTripState().equals(TripState.UPCOMING.name())){
+        if (data.getTripState().equals(TripState.UPCOMING.name())) {
             holder.getStart().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    data.setTripState("DONE");
+                    Executors.newSingleThreadExecutor().execute(() -> {
+                        RoomDB.getTrips(context.getApplicationContext()).update(data);
+                    });
+                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                            Uri.parse("google.navigation:q=mansoura"));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    //if (intent.resolveActivity(getPackageManager()) != null) {
+                    context.startActivity(intent);
+                    // }
                 }
             });
 
-        }else{
+        } else {
             holder.getStart().setClickable(false);
             holder.getStart().setTextColor(context.getResources().getColor(R.color.inactive));
         }
@@ -99,16 +119,16 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
                 PopupMenu popup = new PopupMenu(v.getContext(), holder.getBtnMore());
                 popup.inflate(R.menu.card_more_menu);
 
-                if(data.getTripState().equals(TripState.UPCOMING.name())) {
+                if (data.getTripState().equals(TripState.UPCOMING.name())) {
                     popup.getMenu().findItem(R.id.cancel).setVisible(true);
                     popup.getMenu().findItem(R.id.add_notes).setVisible(true);
                     popup.getMenu().findItem(R.id.edit).setVisible(true);
                     popup.getMenu().findItem(R.id.recall).setVisible(false);
 
-                }else{
-                    if (data.getTripType().equals(TripType.ROUND.name()) && data.getTripState().equals(TripState.DONE.name()) ){
+                } else {
+                    if (data.getTripType().equals(TripType.ROUND.name()) && data.getTripState().equals(TripState.DONE.name())) {
                         popup.getMenu().findItem(R.id.recall).setVisible(true);
-                    }else{
+                    } else {
                         popup.getMenu().findItem(R.id.recall).setVisible(false);
                     }
                     popup.getMenu().findItem(R.id.cancel).setVisible(false);
@@ -117,44 +137,43 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
 
                 }
 
-                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            switch (item.getItemId()) {
-                                case R.id.recall:
-                                    data.setTripState(TripState.UPCOMING.name());
-                                    changeDirection(data);
-                                    Executors.newSingleThreadExecutor().execute(() -> {
-                                        RoomDB.getTrips(context.getApplicationContext()).update(data);
-                                    });
-                                    return true;
-                                case R.id.add_notes:
-                                    Intent intentNotes = new Intent(v.getContext(), AddNoteActivity.class);
-                                    intentNotes.putExtra("Trip", data);
-                                    context.startActivity(intentNotes);
-                                    return true;
-                                case R.id.edit:
-                                    Intent intentEdit = new Intent(v.getContext(), EditTripActivity.class);
-                                    intentEdit.putExtra("trip", data);
-                                    context.startActivity(intentEdit);
-                                    return true;
-                                case R.id.delete:
-                                    AlertDialog("Do you want to remove this Trip?", 3, v, data);
-                                    return true;
-                                case R.id.cancel:
-                                    AlertDialog("Do you want to cancel this Trip?", 4, v, data);
-                                    return true;
-                                default:
-                                    return false;
-                            }
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.recall:
+                                data.setTripState(TripState.UPCOMING.name());
+                                changeDirection(data);
+                                Executors.newSingleThreadExecutor().execute(() -> {
+                                    RoomDB.getTrips(context.getApplicationContext()).update(data);
+                                });
+                                return true;
+                            case R.id.add_notes:
+                                Intent intentNotes = new Intent(v.getContext(), AddNoteActivity.class);
+                                intentNotes.putExtra("Trip", data);
+                                context.startActivity(intentNotes);
+                                return true;
+                            case R.id.edit:
+                                Intent intentEdit = new Intent(v.getContext(), EditTripActivity.class);
+                                intentEdit.putExtra("trip", data);
+                                context.startActivity(intentEdit);
+                                return true;
+                            case R.id.delete:
+                                AlertDialog("Do you want to remove this Trip?", 3, v, data);
+                                return true;
+                            case R.id.cancel:
+                                AlertDialog("Do you want to cancel this Trip?", 4, v, data);
+                                return true;
+                            default:
+                                return false;
                         }
-                    });
-                    popup.show();
-                }
+                    }
+                });
+                popup.show();
+            }
 
 
         });
-
 
 
     }
@@ -236,7 +255,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
         Button btn_start;
 
 
-
         public Viewholder(@NonNull View itemView) {
             super(itemView);
             this.itemView = itemView;
@@ -290,6 +308,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
             }
             return note;
         }
+
         public Button getStart() {
             if (btn_start == null) {
                 btn_start = itemView.findViewById(R.id.btnStart);

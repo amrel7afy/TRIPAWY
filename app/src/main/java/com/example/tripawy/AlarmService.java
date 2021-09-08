@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.IBinder;
 
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -37,14 +38,16 @@ public class AlarmService extends Service {
         super.onCreate();
         // play your music here
         mp = MediaPlayer.create(this.getApplicationContext(), R.raw.alarm);
-        try{mp.start();
-            showAlertDialog(this, this::stopSelf);}catch (Exception e){
+        try {
+            mp.start();
+            showAlertDialog(this, this::stopSelf);
+        } catch (Exception e) {
         }
 
 
-
     }
-    public  void showAlertDialog(Context context, HelperMethods.OnButton onButton) {
+
+    public void showAlertDialog(Context context, HelperMethods.OnButton onButton) {
         int LAYOUT_FLAG;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
@@ -67,8 +70,8 @@ public class AlarmService extends Service {
                                 Uri.parse("google.navigation:q=mansoura"));
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         //if (intent.resolveActivity(getPackageManager()) != null) {
-                            startActivity(intent);
-                       // }
+                        startActivity(intent);
+                        // }
                         onButton.onClicked();
                     }
                 })
@@ -83,10 +86,10 @@ public class AlarmService extends Service {
                 }).setNeutralButton("snooze", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int id) {
-                        HelperMethods.startService(context.getApplicationContext(),trip);
-                            long seconds = 1000;
-                            HelperMethods.startScheduling(context,trip,seconds);
-                            onButton.onClicked();
+                        long seconds = 1000;
+                        HelperMethods.startService(context.getApplicationContext(), trip);
+                        HelperMethods.startScheduling(context,trip,seconds);
+                        onButton.onClicked();
 
                         dialog.dismiss();
                         onButton.onClicked();

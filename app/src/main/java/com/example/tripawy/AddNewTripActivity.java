@@ -1,18 +1,12 @@
 package com.example.tripawy;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.app.Fragment;
 import android.app.TimePickerDialog;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
+
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -22,8 +16,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
-import com.example.tripawy.helper.HelperMethods;
 
 import java.text.DateFormat;
 
@@ -64,8 +56,6 @@ public class AddNewTripActivity extends AppCompatActivity {
         minute = calendar.get(Calendar.MINUTE);
 
     }
-
-
 
 
     private void initializeComponent() {
@@ -116,18 +106,18 @@ public class AddNewTripActivity extends AppCompatActivity {
 
     private void updateDate(Calendar cDate) {
         String dateString = DateFormat.getDateInstance().format(cDate.getTime());
-        btn_datePicker.setText("Date\n"+dateString);
+        btn_datePicker.setText("Date\n" + dateString);
     }
 
     private void updateTime(Calendar c) {
         String timeString = DateFormat.getTimeInstance().format(c.getTime());
-        btn_timePicker.setText("Time\n"+timeString);
+        btn_timePicker.setText("Time\n" + timeString);
     }
 
     public void add(View v) {
         if (!checkTripComponents()) {
             ArrayList<String> notes = new ArrayList<>();
-            Trip data=new Trip(
+            Trip data = new Trip(
                     editTxtTripName.getText().toString(),
                     cDate.getTimeInMillis(),
                     c.getTimeInMillis(),
@@ -141,16 +131,6 @@ public class AddNewTripActivity extends AppCompatActivity {
             Executors.newSingleThreadExecutor().execute(() -> {
                 RoomDB.getTrips(getApplication()).insert(data);
             });
-            if (Build.VERSION.SDK_INT >= 23) {
-                if (!Settings.canDrawOverlays(getApplicationContext())) {
-                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                            Uri.parse("package:" + getApplicationContext().getPackageName()));
-                    v.getContext().startActivity(intent);
-                } else HelperMethods.startScheduling(getApplicationContext(),data,0);
-
-            } else {
-                HelperMethods.startScheduling(getApplicationContext(),data,0);
-            }
             finish();
         }
     }
@@ -166,7 +146,7 @@ public class AddNewTripActivity extends AppCompatActivity {
         if (editTxtTripName.getText().toString().isEmpty()
                 || editTxtStartPoint.getText().toString().isEmpty()
                 || editTxtEndPoint.getText().toString().isEmpty() || radioButtonType == null
-                || btn_timePicker.getText().toString().isEmpty()|| btn_datePicker.getText().toString().isEmpty()) {
+                || btn_timePicker.getText().toString().isEmpty() || btn_datePicker.getText().toString().isEmpty()) {
             Toast.makeText(getApplicationContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
             return true;
         }
@@ -175,10 +155,10 @@ public class AddNewTripActivity extends AppCompatActivity {
     }
 
     private void setType() {
-        if(radioButtonType.getId() == R.id.oneWay){
-            tripType=TripType.ONE_WAY.name();
-        }else{
-            tripType=TripType.ROUND.name();
+        if (radioButtonType.getId() == R.id.oneWay) {
+            tripType = TripType.ONE_WAY.name();
+        } else {
+            tripType = TripType.ROUND.name();
         }
     }
 
