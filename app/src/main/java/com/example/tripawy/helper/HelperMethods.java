@@ -30,7 +30,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.tripawy.AlarmService;
 import com.example.tripawy.Trip;
-import com.example.tripawy.pinnednotificatoin.MyService;
+import com.example.tripawy.pinnednotificatoin.Notification;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -99,23 +99,25 @@ public class HelperMethods extends Activity {
         spinner.setAdapter(adapter);
     }
 
-    public static void startScheduling(Context context, Trip data) {
+    public static void startScheduling(Context context, Trip data,long snoozeSeconds) {
         long time = data.getTime();
-        long date = data.getDate();
-        long dateInSec = date - System.currentTimeMillis();
-        long timeInSec = time - System.currentTimeMillis();
+        long timeInSec = 0;
 
+
+         if(snoozeSeconds==0) {
+             timeInSec = time - System.currentTimeMillis();
+         }
         Intent intent = new Intent(context, AlarmService.class);
         AlarmService.trip = data;
         PendingIntent pendingIntent = PendingIntent.getService(
                 context.getApplicationContext(), 234, intent, 0);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (timeInSec + dateInSec), pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + timeInSec+snoozeSeconds, pendingIntent);
         Toast.makeText(context, "Alarm set to after " + timeInSec + " seconds", Toast.LENGTH_LONG).show();
     }
 
     public static void startService(Context context, Trip trip) {
-        Intent serviceIntent = new Intent(context, MyService.class);
+        Intent serviceIntent = new Intent(context, Notification.class);
         serviceIntent.putExtra("inputExtra", "You are waiting for trip  " + trip.getName() + "");
         ContextCompat.startForegroundService(context, serviceIntent);
     }

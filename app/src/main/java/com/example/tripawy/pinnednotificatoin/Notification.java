@@ -1,6 +1,6 @@
 package com.example.tripawy.pinnednotificatoin;
 
-import android.app.Notification;
+
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -17,7 +17,7 @@ import com.example.tripawy.R;
 
 import java.util.concurrent.Executors;
 
-public class MyService extends Service {
+public class Notification extends Service {
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
     @Override
     public void onCreate() {
@@ -32,7 +32,7 @@ public class MyService extends Service {
             Intent notificationIntent = new Intent(this, HomeActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(this,
                     0, notificationIntent, 0);
-            Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+            android.app.Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                     .setContentTitle("Notification")
                     .setContentText(input)
                     .setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -64,7 +64,7 @@ public class MyService extends Service {
             manager.createNotificationChannel(serviceChannel);
         }
     }
-    public MyService() {
+    public Notification() {
     }
 
 }

@@ -8,7 +8,10 @@ import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +22,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.example.tripawy.helper.HelperMethods;
 
 import java.text.DateFormat;
 
@@ -40,7 +45,7 @@ public class AddNewTripActivity extends AppCompatActivity {
     private String tripType;
 
     private int year, month, dayOfMonth, hour, minute;
-    private Calendar calendar;
+    private static Calendar c, cDate;
 
 
     @Override
@@ -51,7 +56,7 @@ public class AddNewTripActivity extends AppCompatActivity {
 
         initializeComponent();
 
-        calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
         dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
@@ -80,11 +85,11 @@ public class AddNewTripActivity extends AppCompatActivity {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-
-                        calendar.set(Calendar.YEAR, year);
-                        calendar.set(Calendar.MONTH, month);
-                        calendar.set(Calendar.DAY_OF_MONTH, day);
-                        updateDate(calendar);
+                        cDate = Calendar.getInstance();
+                        cDate.set(Calendar.YEAR, year);
+                        cDate.set(Calendar.MONTH, month);
+                        cDate.set(Calendar.DAY_OF_MONTH, day);
+                        updateDate(cDate);
 
                     }
                 }, year, month, dayOfMonth);
@@ -98,10 +103,11 @@ public class AddNewTripActivity extends AppCompatActivity {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay,
                                           int minute) {
-                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                        calendar.set(Calendar.MINUTE, minute);
-                        calendar.set(Calendar.SECOND, 0);
-                        updateTime(calendar);
+                        c = Calendar.getInstance();
+                        c.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        c.set(Calendar.MINUTE, minute);
+                        c.set(Calendar.SECOND, 0);
+                        updateTime(c);
                     }
                 }, hour, minute, false);
 
@@ -119,26 +125,32 @@ public class AddNewTripActivity extends AppCompatActivity {
     }
 
     public void add(View v) {
-
-
         if (!checkTripComponents()) {
             ArrayList<String> notes = new ArrayList<>();
+            Trip data=new Trip(
+                    editTxtTripName.getText().toString(),
+                    cDate.getTimeInMillis(),
+                    c.getTimeInMillis(),
+                    TripState.UPCOMING.name(),
+                    tripType,
+                    editTxtStartPoint.getText().toString(),
+                    editTxtEndPoint.getText().toString(),
+                    notes
+            );
             // to insert item
             Executors.newSingleThreadExecutor().execute(() -> {
-                RoomDB.getTrips(getApplication()).insert(
-
-                        new Trip(
-                                editTxtTripName.getText().toString(),
-                                calendar.getTimeInMillis(),
-                                calendar.getTimeInMillis(),
-                                TripState.UPCOMING.name(),
-                                tripType,
-                                editTxtStartPoint.getText().toString(),
-                                editTxtEndPoint.getText().toString(),
-                                notes
-                        )
-                );
+                RoomDB.getTrips(getApplication()).insert(data);
             });
+            if (Build.VERSION.SDK_INT >= 23) {
+                if (!Settings.canDrawOverlays(getApplicationContext())) {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                            Uri.parse("package:" + getApplicationContext().getPackageName()));
+                    v.getContext().startActivity(intent);
+                } else HelperMethods.startScheduling(getApplicationContext(),data,0);
+
+            } else {
+                HelperMethods.startScheduling(getApplicationContext(),data,0);
+            }
             finish();
         }
     }

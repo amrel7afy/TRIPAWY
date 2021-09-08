@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TRIPAWY">
         <service
-            android:name=".pinnednotificatoin.MyService"
+            android:name=".pinnednotificatoin.Notification"
             android:enabled="true"
             android:exported="true"></service>
         <service
