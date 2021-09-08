@@ -42,7 +42,6 @@ public class SignUpActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
 
-
     }
 
     private void initializeComponent() {
@@ -62,60 +61,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     public void setBtn_signUp(View v) {
         if (HelperMethods.isNetworkConnected(this)) {
-            if (editTextFirstName.getText().toString().isEmpty() && editTextLastName.getText().toString().isEmpty()
-                    && editTextEmail.getText().toString().isEmpty() && editTextPassword.getText().toString().isEmpty()) {
-                editTextFirstName.setError("First Name is required!");
-                editTextLastName.setError("Last Name is required!");
-                editTextEmail.setError("Email is required!");
-                editTextPassword.setError("Password is required!");
-            } else if (editTextFirstName.getText().toString().isEmpty() && editTextLastName.getText().toString().isEmpty()
-                    && editTextEmail.getText().toString().isEmpty()) {
-                editTextFirstName.setError("First Name is required!");
-                editTextLastName.setError("Last Name is required!");
-                editTextEmail.setError("Email is required!");
-            } else if (editTextFirstName.getText().toString().isEmpty() && editTextEmail.getText().toString().isEmpty()
-                    && editTextPassword.getText().toString().isEmpty()) {
-                editTextFirstName.setError("First Name is required!");
-                editTextEmail.setError("Email is required!");
-                editTextPassword.setError("Password is required!");
-            } else if (editTextFirstName.getText().toString().isEmpty() && editTextLastName.getText().toString().isEmpty()
-                    && editTextPassword.getText().toString().isEmpty()) {
-                editTextFirstName.setError("First Name is required!");
-                editTextLastName.setError("Last Name is required!");
-                editTextPassword.setError("Password is required!");
-            } else if (editTextLastName.getText().toString().isEmpty() && editTextEmail.getText().toString().isEmpty()
-                    && editTextPassword.getText().toString().isEmpty()) {
-                editTextLastName.setError("Last Name is required!");
-                editTextEmail.setError("Email is required!");
-                editTextPassword.setError("Password is required!");
-            } else if (editTextFirstName.getText().toString().isEmpty() && editTextLastName.getText().toString().isEmpty()) {
-                editTextFirstName.setError("First Name is required!");
-                editTextLastName.setError("Last Name is required!");
-            } else if (editTextFirstName.getText().toString().isEmpty() && editTextEmail.getText().toString().isEmpty()) {
-                editTextFirstName.setError("First Name is required!");
-                editTextEmail.setError("Email is required!");
-
-            } else if (editTextFirstName.getText().toString().isEmpty() && editTextPassword.getText().toString().isEmpty()) {
-                editTextFirstName.setError("First Name is required!");
-                editTextPassword.setError("Password is required!");
-            } else if (editTextLastName.getText().toString().isEmpty() && editTextEmail.getText().toString().isEmpty()) {
-                editTextLastName.setError("Last Name is required!");
-                editTextEmail.setError("Email is required!");
-            } else if (editTextLastName.getText().toString().isEmpty() && editTextPassword.getText().toString().isEmpty()) {
-                editTextLastName.setError("Last Name is required!");
-                editTextPassword.setError("Password is required!");
-            } else if (editTextEmail.getText().toString().isEmpty() && editTextPassword.getText().toString().isEmpty()) {
-                editTextEmail.setError("Email is required!");
-                editTextPassword.setError("Password is required!");
-            } else if (editTextFirstName.getText().toString().isEmpty()) {
-                editTextFirstName.setError("First Name is required!");
-            } else if (editTextLastName.getText().toString().isEmpty()) {
-                editTextLastName.setError("Last Name is required!");
-            } else if (editTextEmail.getText().toString().isEmpty()) {
-                editTextEmail.setError("Email is required!");
-            } else if (editTextPassword.getText().toString().isEmpty()) {
-                editTextPassword.setError("Password is required!");
-            } else {
+            if (checkEmpty()) {
                 mAuth.createUserWithEmailAndPassword(editTextEmail.getText().toString(), editTextPassword.getText().toString())
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -145,7 +91,7 @@ public class SignUpActivity extends AppCompatActivity {
                         });
             }
 
-        }else{
+        } else {
             View vee = findViewById(R.id.coordinatorSignUp);
             Snackbar snackbar = Snackbar
                     .make(vee, "Network Error", Snackbar.LENGTH_INDEFINITE)
@@ -159,5 +105,29 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
+    public boolean checkEmpty() {
+        int count = 0;
+        if (editTextFirstName.getText().toString().isEmpty()) {
+            editTextFirstName.setError("First Name is required!");
+            count++;
+        }
+        if (editTextLastName.getText().toString().isEmpty()) {
+            editTextLastName.setError("Last Name is required!");
+            count++;;
+        }
+        if (editTextEmail.getText().toString().isEmpty()) {
+            editTextEmail.setError("Email is required!");
+            count++;
+        }
+        if (editTextPassword.getText().toString().isEmpty()) {
+            editTextPassword.setError("Password is required!");
+            count++;
+        }
+        if (count == 0){
+            return true;
+        }
+        return false;
+    }
 
 }
+

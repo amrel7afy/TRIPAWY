@@ -53,7 +53,6 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
 
-
     }
 
     private void initializeComponent() {
@@ -70,15 +69,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void signIn(View v) {
-        if(HelperMethods.isNetworkConnected(this)) {
-            if (editTextEmail.getText().toString().isEmpty() && editTextPassword.getText().toString().isEmpty()) {
-                editTextEmail.setError("Email is required!");
-                editTextPassword.setError("Password is required!");
-            } else if (editTextPassword.getText().toString().isEmpty()) {
-                editTextPassword.setError("Password is required!");
-            } else if (editTextEmail.getText().toString().isEmpty()) {
-                editTextEmail.setError("Email is required!");
-            } else {
+        if (HelperMethods.isNetworkConnected(this)) {
+            if (checkEmpty()) {
                 mAuth.signInWithEmailAndPassword(editTextEmail.getText().toString(), editTextPassword.getText().toString())
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -100,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
             }
-        }else{
+        } else {
             View view = findViewById(R.id.coordinatorLogIn);
             Snackbar snackbar = Snackbar
                     .make(view, "Network Error", Snackbar.LENGTH_INDEFINITE)
@@ -136,12 +128,31 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
             }
+
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
                 Toast.makeText(getApplicationContext(), "Failed 2", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+
+    public boolean checkEmpty() {
+        int count = 0;
+
+        if (editTextEmail.getText().toString().isEmpty()) {
+            editTextEmail.setError("Email is required!");
+            count++;
+        }
+        if (editTextPassword.getText().toString().isEmpty()) {
+            editTextPassword.setError("Password is required!");
+            count++;
+        }
+        if (count == 0) {
+            return true;
+        }
+        return false;
     }
 
 
