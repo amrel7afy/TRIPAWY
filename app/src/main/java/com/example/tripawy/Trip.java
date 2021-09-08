@@ -18,7 +18,7 @@ import java.util.Map;
 enum TripState {
     UPCOMING,
     DONE,
-    CANCLED
+    CANCELED
 }
 
 enum TripType {
@@ -147,19 +147,4 @@ public class Trip implements Serializable {
         this.notes = notes;
     }
 
-    @Exclude
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("id", id);
-        result.put("name", name);
-        result.put("date", date);
-        result.put("time", time);
-        result.put("tripState", tripState);
-        result.put("tripType", tripType);
-        result.put("from",from);
-        result.put("to",to);
-        result.put("notes",notes);
-
-        return result;
-    }
 }

@@ -29,7 +29,8 @@ public interface TripDao {
     @Query("DELETE  FROM trip where tripState != 'UPCOMING' ")
     void deleteAllHistory();
 
-
+    @Query("DELETE  FROM trip ")
+    void deleteAll();
 
     @Insert
     void insertAll(Trip... trips);

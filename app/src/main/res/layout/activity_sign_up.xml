@@ -1,20 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorSignUp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SignUpActivity"
     android:orientation="vertical"
-    android:padding="50dp">
+    android:background="@drawable/background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".SignUpActivity"
+        android:orientation="vertical"
+        android:background="@drawable/background">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="70dp"
+        android:paddingRight="70dp"
+        android:src="@drawable/logo"
+        android:layout_marginBottom="20dp"
+        />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sign_up"
-        android:textColor="@color/black"
-        android:textSize="30sp"
+        android:textColor="@color/yellow"
+        android:textSize="30dp"
+        android:fontFamily="@font/pantondemo_black"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp"/>
 
@@ -23,13 +41,14 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="50dp">
         <TextView
             android:id="@+id/newUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/already_an_user"
-            android:textColor="@color/black"
+            android:fontFamily="@font/comfortaa_light"
+            android:textColor="@color/yellow"
             android:textSize="15sp"
             android:layout_marginRight="10dp" />
 
@@ -39,28 +58,42 @@
             android:layout_height="wrap_content"
             android:onClick="signIn"
             android:text="@string/sign_in"
-            android:textColor="@color/light_blue_900" />
+            android:fontFamily="@font/comfortaa_bold"
+            android:textColor="@color/yellow" />
     </LinearLayout>
     <EditText
         android:id="@+id/editTextFirstNameSU"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:ems="12"
         android:hint="@string/firstName"
         android:inputType="textPersonName"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp"
+        android:textColor="@color/yellow"
+        android:textColorHint="@color/yellow"
+        android:fontFamily="@font/comfortaa_light"
+        android:backgroundTint="@color/yellow"
+        android:drawableLeft="@drawable/ic_baseline_perm_identity_24"
+        android:drawablePadding="15dp"
         />
 
     <EditText
         android:id="@+id/editTextLastNameSU"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:ems="12"
         android:hint="@string/lastName"
         android:inputType="textPersonName"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp"
+        android:textColor="@color/yellow"
+        android:textColorHint="@color/yellow"
+        android:fontFamily="@font/comfortaa_light"
+        android:backgroundTint="@color/yellow"
+        android:drawableLeft="@drawable/ic_baseline_perm_identity_24"
+        android:drawablePadding="15dp"
+
         />
 
 
@@ -68,22 +101,35 @@
         android:id="@+id/editTextEmailSU"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:ems="12"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp"
+        android:textColor="@color/yellow"
+        android:textColorHint="@color/yellow"
+        android:fontFamily="@font/comfortaa_light"
+        android:backgroundTint="@color/yellow"
+        android:drawableLeft="@drawable/ic_baseline_email_24"
+        android:drawablePadding="15dp"
+
        />
 
     <EditText
         android:id="@+id/editTextPasswordSU"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:ems="12"
         android:hint="@string/password"
         android:inputType="textPassword"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="50dp"
+        android:textColor="@color/yellow"
+        android:textColorHint="@color/yellow"
+        android:fontFamily="@font/comfortaa_light"
+        android:backgroundTint="@color/yellow"
+        android:drawableLeft="@drawable/ic_baseline_lock_24"
+        android:drawablePadding="15dp"
         />
 
 
@@ -95,11 +141,14 @@
         android:onClick="setBtn_signUp"
         android:text="@string/sign_up"
         android:layout_gravity="center_horizontal"
+        android:textColor="@color/sky"
+        android:fontFamily="@font/comfortaa_light"
+        android:backgroundTint="@color/yellow"
         />
 
 
 
 
-
-
 </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

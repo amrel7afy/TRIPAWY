@@ -1,6 +1,7 @@
 package com.example.tripawy;
 
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
@@ -20,12 +21,12 @@ import com.example.tripawy.helper.HelperMethods;
 import java.util.concurrent.Executors;
 
 public class AlarmService extends Service {
-    Trip trip;
+    public static Trip trip;
     private MediaPlayer mp;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //trip= (Trip) intent.getSerializableExtra("Trip");
+
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -53,33 +54,35 @@ public class AlarmService extends Service {
                 .setCancelable(false)
                 .setMessage("Reminder for your trip!!!")
                 .setPositiveButton("start", new DialogInterface.OnClickListener() {
+                    @SuppressLint("QueryPermissionsNeeded")
                     public void onClick(DialogInterface dialog, int id) {
                         //TODO  intent to go to google maps
-                        Uri gmmIntentUri = Uri.parse("geo:12.22222,22.22222");
-                        //Intent intent =new Intent(Intent.ACTION_VIEW,gmmIntentUri);
-                        //intent.setPackage("com.google.android.apps.maps");
+                        trip.setTripState("DONE");
+                        Executors.newSingleThreadExecutor().execute(() -> {
+                            RoomDB.getTrips(getApplicationContext()).update(trip);
+                        });
                         Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
                                 Uri.parse("google.navigation:q=mansoura"));
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        if (intent.resolveActivity(getPackageManager()) != null) {
+                        //if (intent.resolveActivity(getPackageManager()) != null) {
                             startActivity(intent);
-                        }
+                       // }
                         onButton.onClicked();
                     }
                 })
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        /*trip.setTripState("CANCLED");
+                        trip.setTripState("CANCELED");
                         Executors.newSingleThreadExecutor().execute(() -> {
                             RoomDB.getTrips(getApplicationContext()).update(trip);
-                        });*/
+                        });
                         dialog.dismiss();
                         onButton.onClicked();
                     }
                 }).setNeutralButton("snooze", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int id) {
-
+                        HelperMethods.startService(context.getApplicationContext(),trip);
                         dialog.dismiss();
                         onButton.onClicked();
                     }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Title" parent="android:Widget.Toolbar">
+        <item name="fontFamily">@font/pantondemo_black</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:titleMarginStart">20dp</item>
+    </style>
+</resources>

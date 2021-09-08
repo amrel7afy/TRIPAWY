@@ -7,11 +7,14 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -27,6 +30,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.tripawy.AlarmService;
 import com.example.tripawy.Trip;
+import com.example.tripawy.pinnednotificatoin.MyService;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -102,12 +106,20 @@ public class HelperMethods extends Activity {
         long timeInSec = time - System.currentTimeMillis();
 
         Intent intent = new Intent(context, AlarmService.class);
+        AlarmService.trip = data;
         PendingIntent pendingIntent = PendingIntent.getService(
                 context.getApplicationContext(), 234, intent, 0);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (timeInSec + dateInSec), pendingIntent);
         Toast.makeText(context, "Alarm set to after " + timeInSec + " seconds", Toast.LENGTH_LONG).show();
     }
+
+    public static void startService(Context context, Trip trip) {
+        Intent serviceIntent = new Intent(context, MyService.class);
+        serviceIntent.putExtra("inputExtra", "You are waiting for trip  " + trip.getName() + "");
+        ContextCompat.startForegroundService(context, serviceIntent);
+    }
+
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
@@ -169,6 +181,30 @@ public class HelperMethods extends Activity {
                 getLastLocation();
             }
         }
+    }
+
+
+
+
+    //NETWORK
+    public static boolean isNetworkConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if (ni == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public static void openWifiSettings(Context context){
+
+        final Intent intent = new Intent(Intent.ACTION_MAIN, null);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        final ComponentName cn = new ComponentName("com.android.settings", "com.android.settings.wifi.WifiSettings");
+        intent.setComponent(cn);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity( intent);
     }
 
 }

@@ -4,7 +4,11 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,8 +18,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tripawy.helper.HelperMethods;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,6 +50,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         initializeComponent();
         mAuth = FirebaseAuth.getInstance();
+        getSupportActionBar().hide();
+
+
 
     }
 
@@ -61,37 +70,48 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void signIn(View v) {
-
-        if (editTextEmail.getText().toString().isEmpty() && editTextPassword.getText().toString().isEmpty()) {
-            editTextEmail.setError("Email is required!");
-            editTextPassword.setError("Password is required!");
-        } else if (editTextPassword.getText().toString().isEmpty()) {
-            editTextPassword.setError("Password is required!");
-        } else if (editTextEmail.getText().toString().isEmpty()) {
-            editTextEmail.setError("Email is required!");
-        } else {
-            mAuth.signInWithEmailAndPassword(editTextEmail.getText().toString(), editTextPassword.getText().toString())
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                getData(user);
-                                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                                startActivity(intent);
-                                finish();
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Toast.makeText(LoginActivity.this, "Wrong Email and Password",
-                                        Toast.LENGTH_LONG).show();
+        if(HelperMethods.isNetworkConnected(this)) {
+            if (editTextEmail.getText().toString().isEmpty() && editTextPassword.getText().toString().isEmpty()) {
+                editTextEmail.setError("Email is required!");
+                editTextPassword.setError("Password is required!");
+            } else if (editTextPassword.getText().toString().isEmpty()) {
+                editTextPassword.setError("Password is required!");
+            } else if (editTextEmail.getText().toString().isEmpty()) {
+                editTextEmail.setError("Email is required!");
+            } else {
+                mAuth.signInWithEmailAndPassword(editTextEmail.getText().toString(), editTextPassword.getText().toString())
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    getData(user);
+                                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Toast.makeText(LoginActivity.this, "Wrong Email and Password",
+                                            Toast.LENGTH_LONG).show();
+                                }
                             }
+                        });
+
+
+            }
+        }else{
+            View view = findViewById(R.id.coordinatorLogIn);
+            Snackbar snackbar = Snackbar
+                    .make(view, "Network Error", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("FIX", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            HelperMethods.openWifiSettings(LoginActivity.this);
                         }
                     });
-
-
+            snackbar.show();
         }
-
 
     }
 

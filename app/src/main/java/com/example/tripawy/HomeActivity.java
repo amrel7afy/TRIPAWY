@@ -1,10 +1,12 @@
 package com.example.tripawy;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
@@ -12,7 +14,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.lifecycle.LifecycleOwner;
+
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
@@ -42,6 +46,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,7 +81,6 @@ public class HomeActivity extends AppCompatActivity {
         recyclerViewHome = findViewById(R.id.recyclerViewHome);
         recyclerViewHistory = findViewById(R.id.recyclerViewHistory);
 
-
         binding.appBarHome.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,7 +109,9 @@ public class HomeActivity extends AppCompatActivity {
         /****
          * Access user Data
          */
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+
         if (user != null) {
             // Name, email address, and profile photo Url
 
@@ -138,7 +144,9 @@ public class HomeActivity extends AppCompatActivity {
                     int id = menuItem.getItemId();
                     if (id == R.id.btn_sync) {
                         sync(uid);
-                    }else if(id == R.id.btn_logout){
+                    } else if (id == R.id.btn_logout) {
+                        auth.signOut();
+                        signOut();
 
                     }
                     NavigationUI.onNavDestinationSelected(menuItem, navController);
@@ -147,7 +155,6 @@ public class HomeActivity extends AppCompatActivity {
                 }
             });
         }
-
 
 
     }
@@ -249,7 +256,6 @@ public class HomeActivity extends AppCompatActivity {
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = db.getReference("Users");
 
-
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -258,7 +264,7 @@ public class HomeActivity extends AppCompatActivity {
                 // data base reference will sends data to firebase.
                 //Converters.fromArrayList(tripList.getValue().get(0).getNotes());
 
-                    databaseReference.child(uid).child("Trips").setValue(tripList);
+                databaseReference.child(uid).child("Trips").setValue(tripList);
 
                 // after adding this data we are showing toast message.
                 Toast.makeText(HomeActivity.this, "data added", Toast.LENGTH_SHORT).show();
@@ -271,9 +277,20 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(HomeActivity.this, "Fail to add data " + error, Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
-
+    private void signOut() {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            RoomDB.getTrips(getApplication()).deleteAll();
+        });
+        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+        startActivity(intent);
     }
 
 
 }
+
+
+
+
+

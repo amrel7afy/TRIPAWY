@@ -10,9 +10,10 @@ public class RoomDB {
     public static TripDao getTrips(Context application) {
         if (db == null) {
             db = Room.databaseBuilder(application,
-                    AppDatabase.class, "database-name").build();
+                    AppDatabase.class, "database").build();
             return db.tripDao();
         } else return db.tripDao();
+    }
+
 
     }
-}

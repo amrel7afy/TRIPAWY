@@ -21,11 +21,8 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         getSupportActionBar().hide();
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         mAuth = FirebaseAuth.getInstance();
-
-
 
 
         new Handler().postDelayed(new Runnable() {
@@ -37,7 +34,7 @@ public class SplashActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }else{
-                    Intent intent =new Intent(getApplicationContext(),LoginActivity.class);
+                    Intent intent =new Intent(getApplicationContext(),SignUpActivity.class);
                     startActivity(intent);
                     finish();
                 }
