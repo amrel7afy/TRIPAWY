@@ -28,6 +28,7 @@ import com.example.tripawy.helper.HelperMethods;
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -55,8 +56,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
         Trip data = tripArrayList.getValue().get(position);
         holder.getTxtName().setText(data.getName());
-        holder.getTxtDate().setText(convertDate(data.getDate()));
-        holder.getTxtTime().setText(convertTime(data.getTime()));
+        holder.getTxtDate().setText(DateFormat.getDateInstance().format(data.getDate()));
+        holder.getTxtTime().setText(DateFormat.getTimeInstance().format(data.getTime()));
         holder.getTxtFrom().setText(data.getFrom());
         holder.getTxtTo().setText(data.getTo());
         holder.getTxtState().setText(data.getTripState());
@@ -224,22 +225,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
 
         alertDialogDelete.show();
 
-    }
-
-    //Convert Date From Long To String
-    private String convertDate(Long dateLong) {
-        Date date = new Date(dateLong);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
-        String dateText = sdf.format(date);
-        return dateText;
-    }
-
-    //Convert Time From Long To String
-    private String convertTime(Long timeLong) {
-        Date date = new Date(timeLong);
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
-        String timeText = sdf.format(date);
-        return timeText;
     }
 
     @Override

@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="50dp">
         <TextView
             android:id="@+id/newUser"
             android:layout_width="wrap_content"
@@ -68,7 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="40dp"
-        android:ems="12"
+        android:ems="15"
         android:hint="@string/email"
         android:textColor="@color/yellow"
         android:textColorHint="@color/yellow"
@@ -82,11 +82,11 @@
         android:id="@+id/editTextPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="12"
+        android:ems="15"
         android:hint="@string/password"
         android:inputType="textPassword"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="70dp"
         android:textColor="@color/yellow"
         android:textColorHint="@color/yellow"
         android:fontFamily="@font/comfortaa_light"

@@ -40,7 +40,7 @@ public class AddNewTripActivity extends AppCompatActivity {
     private String tripType;
 
     private int year, month, dayOfMonth, hour, minute;
-    private Calendar c, cDate;
+    private Calendar calendar;
 
 
     @Override
@@ -51,7 +51,7 @@ public class AddNewTripActivity extends AppCompatActivity {
 
         initializeComponent();
 
-        Calendar calendar = Calendar.getInstance();
+        calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
         dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
@@ -80,11 +80,11 @@ public class AddNewTripActivity extends AppCompatActivity {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        cDate = Calendar.getInstance();
-                        cDate.set(Calendar.YEAR, year);
-                        cDate.set(Calendar.MONTH, month);
-                        cDate.set(Calendar.DAY_OF_MONTH, day);
-                        updateDate(cDate);
+
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, month);
+                        calendar.set(Calendar.DAY_OF_MONTH, day);
+                        updateDate(calendar);
 
                     }
                 }, year, month, dayOfMonth);
@@ -98,11 +98,10 @@ public class AddNewTripActivity extends AppCompatActivity {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay,
                                           int minute) {
-                        c = Calendar.getInstance();
-                        c.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                        c.set(Calendar.MINUTE, minute);
-                        c.set(Calendar.SECOND, 0);
-                        updateTime(c);
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        calendar.set(Calendar.MINUTE, minute);
+                        calendar.set(Calendar.SECOND, 0);
+                        updateTime(calendar);
                     }
                 }, hour, minute, false);
 
@@ -130,8 +129,8 @@ public class AddNewTripActivity extends AppCompatActivity {
 
                         new Trip(
                                 editTxtTripName.getText().toString(),
-                                cDate.getTimeInMillis(),
-                                c.getTimeInMillis(),
+                                calendar.getTimeInMillis(),
+                                calendar.getTimeInMillis(),
                                 TripState.UPCOMING.name(),
                                 tripType,
                                 editTxtStartPoint.getText().toString(),
