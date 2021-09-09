@@ -65,6 +65,12 @@ public class Notification extends Service {
     }
     public Notification() {
     }
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        System.out.println("onTaskRemoved called");
+        super.onTaskRemoved(rootIntent);
+        this.stopSelf();
+    }
 
 
 }

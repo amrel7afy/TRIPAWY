@@ -4,10 +4,12 @@
     package="com.example.tripawy">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
 
     <application
         android:allowBackup="true"
@@ -16,53 +18,49 @@
         android:roundIcon="@mipmap/ic_launcher_tripawy2_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TRIPAWY">
+        <receiver
+            android:name=".broad_cast_reciever.MyReceiver"
+            android:enabled="true"
+            android:exported="true">
+
+        </receiver>
 
         <service
             android:name=".pinnednotificatoin.Notification"
             android:enabled="true"
-            android:exported="true"></service>
-        <service
-            android:name=".AlarmService"
-            android:enabled="true"
-            android:exported="true" />
+            android:exported="false"
+            android:stopWithTask="true" />
 
         <activity
             android:name=".EditTripActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SignUpActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LoginActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AddNoteActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AddNewTripActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomeActivity"
             android:exported="true"
             android:label="@string/title_activity_home"
-            android:theme="@style/Theme.TRIPAWY.NoActionBar"
             android:screenOrientation="portrait"
-            />
+            android:theme="@style/Theme.TRIPAWY.NoActionBar" />
         <activity
             android:name=".SplashActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

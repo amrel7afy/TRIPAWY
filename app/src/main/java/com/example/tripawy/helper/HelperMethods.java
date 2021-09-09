@@ -17,6 +17,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -31,13 +32,14 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.example.tripawy.AlarmService;
 import com.example.tripawy.Trip;
+import com.example.tripawy.broad_cast_reciever.MyReceiver;
 import com.example.tripawy.pinnednotificatoin.Notification;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Date;
@@ -109,14 +111,17 @@ public class HelperMethods extends Activity {
 
         if (snoozeSeconds == 0) {
             timeInSec = time - System.currentTimeMillis();
-            AlarmService.trip = data;
+           // AlarmService.trip = data;
         }
         if (timeInSec >= 0) {
-            Intent intent = new Intent(context, AlarmService.class);
-            PendingIntent pendingIntent = PendingIntent.getService(
-                    context.getApplicationContext(), 234, intent, 0);
+            Intent intent = new Intent(context, MyReceiver.class);
+            Bundle args = new Bundle();
+            args.putSerializable("TripObj",(Serializable)data);
+            intent.putExtra("Trip",args);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                    context.getApplicationContext(), data.getId(), intent, 0);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-            alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + timeInSec + snoozeSeconds, pendingIntent);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + timeInSec + snoozeSeconds, pendingIntent);
             Toast.makeText(context, "Alarm set to after " + timeInSec + " seconds", Toast.LENGTH_LONG).show();
         }
 

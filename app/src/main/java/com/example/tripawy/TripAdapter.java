@@ -96,7 +96,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
                         RoomDB.getTrips(context.getApplicationContext()).update(data);
                     });
                     Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                            Uri.parse("google.navigation:q=cairo"));
+                            Uri.parse("google.navigation:q="+data.getTo()));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     //if (intent.resolveActivity(getPackageManager()) != null) {
                     context.startActivity(intent);
@@ -114,7 +114,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
             public void onClick(View v) {
                 PopupMenu popup = new PopupMenu(v.getContext(), holder.getBtnMore());
                 popup.inflate(R.menu.card_more_menu);
-
                 if (data.getTripState().equals(TripState.UPCOMING.name())) {
                     popup.getMenu().findItem(R.id.cancel).setVisible(true);
                     popup.getMenu().findItem(R.id.add_notes).setVisible(true);
