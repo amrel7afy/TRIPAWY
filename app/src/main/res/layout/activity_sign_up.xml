@@ -76,6 +76,8 @@
         android:backgroundTint="@color/yellow"
         android:drawableLeft="@drawable/ic_baseline_perm_identity_24"
         android:drawablePadding="15dp"
+        android:textCursorDrawable="@null"
+
         />
 
     <EditText
@@ -93,6 +95,8 @@
         android:backgroundTint="@color/yellow"
         android:drawableLeft="@drawable/ic_baseline_perm_identity_24"
         android:drawablePadding="15dp"
+        android:textCursorDrawable="@null"
+
 
         />
 
@@ -112,8 +116,10 @@
         android:backgroundTint="@color/yellow"
         android:drawableLeft="@drawable/ic_baseline_email_24"
         android:drawablePadding="15dp"
+        android:textCursorDrawable="@null"
 
-       />
+
+        />
 
     <EditText
         android:id="@+id/editTextPasswordSU"
@@ -130,6 +136,8 @@
         android:backgroundTint="@color/yellow"
         android:drawableLeft="@drawable/ic_baseline_lock_24"
         android:drawablePadding="15dp"
+        android:textCursorDrawable="@null"
+
         />
 
 

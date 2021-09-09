@@ -13,50 +13,53 @@
         android:fitsSystemWindows="true"
         android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/purple_500">
-
-        <LinearLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:background="@color/purple_500">
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/sky">
 
-            <ImageButton
-                android:id="@+id/btn_close"
-                android:layout_width="?attr/actionBarSize"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                app:srcCompat="@drawable/ic_baseline_close_24"
-                app:tint="@color/white"
-                android:onClick="close"/>
-
-            <TextView
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="@string/add_notes"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textColor="@android:color/white"
-                android:layout_marginLeft="5dp"/>
+                android:orientation="horizontal"
+                android:background="@color/sky">
 
-            <Button
-                android:id="@+id/btn_save"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/save"
-                android:textColor="@android:color/white"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:onClick="save"
-                />
+                <ImageButton
+                    android:id="@+id/btn_close"
+                    android:layout_width="?attr/actionBarSize"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:srcCompat="@drawable/ic_baseline_close_24"
+                    app:tint="@color/white"
+                    android:onClick="close"/>
 
-        </LinearLayout>
-    </com.google.android.material.appbar.AppBarLayout>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/add_notes"
+                    android:fontFamily="@font/pantondemo_black"
+                    android:textAppearance="@style/Title"
+                    android:textColor="@android:color/white"
+                    android:layout_marginLeft="5dp"/>
+
+                <ImageButton
+                    android:id="@+id/btn_save"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/add"
+                    android:textColor="@android:color/white"
+                    android:src="@drawable/ic_baseline_save_24"
+                    android:onClick="save"
+                    />
+
+            </LinearLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
         <LinearLayout
             android:id="@+id/linear"
             android:layout_width="match_parent"
@@ -84,19 +87,25 @@
 
         <Button
             android:id="@+id/btn_add"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/add"
             android:layout_marginRight="20dp"
-            android:onClick="add"/>
+            android:onClick="add"
+            app:strokeColor="@color/sky"
+            />
 
         <Button
             android:id="@+id/btn_delete"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/deletee"
             android:layout_marginLeft="20dp"
-            android:onClick="delete"/>
+            android:onClick="delete"
+            app:strokeColor="@color/sky"
+            />
     </LinearLayout>
 </RelativeLayout>
 

@@ -11,11 +11,12 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher2"
+        android:icon="@mipmap/ic_launcher_tripawy2"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_tripawy2_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TRIPAWY">
+
         <service
             android:name=".pinnednotificatoin.Notification"
             android:enabled="true"
@@ -27,27 +28,41 @@
 
         <activity
             android:name=".EditTripActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".SignUpActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".LoginActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".AddNoteActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".AddNewTripActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".HomeActivity"
             android:exported="true"
             android:label="@string/title_activity_home"
-            android:theme="@style/Theme.TRIPAWY.NoActionBar" />
+            android:theme="@style/Theme.TRIPAWY.NoActionBar"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".SplashActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

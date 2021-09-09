@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.WindowManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,16 +28,16 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 FirebaseUser currentUser = mAuth.getCurrentUser();
-                if(currentUser != null){
-                    Intent intent =new Intent(getApplicationContext(),HomeActivity.class);
+                if (currentUser != null) {
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                     startActivity(intent);
                     finish();
-                }else{
-                    Intent intent =new Intent(getApplicationContext(),SignUpActivity.class);
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
                     startActivity(intent);
                     finish();
                 }
             }
-        },500 );
+        }, 1000);
     }
 }

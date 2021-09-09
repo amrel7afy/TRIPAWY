@@ -8,7 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
@@ -23,8 +23,9 @@ import com.example.tripawy.RoomDB;
 import com.example.tripawy.Trip;
 import com.example.tripawy.TripAdapter;
 import com.example.tripawy.databinding.FragmentHomeBinding;
+import com.example.tripawy.helper.HelperMethods;
+import com.google.android.material.snackbar.Snackbar;
 
-import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -34,12 +35,13 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     public RecyclerView recyclerViewHome;
     private TextView txtNoTrips;
+    private View root;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        root = binding.getRoot();
 
         recyclerViewHome = root.findViewById(R.id.recyclerViewHome);
         txtNoTrips = root.findViewById(R.id.NoTripsHome);
@@ -66,8 +68,6 @@ public class HomeFragment extends Fragment {
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                 recyclerViewHome.setLayoutManager(linearLayoutManager);
                 recyclerViewHome.setAdapter(cardAdapter);
-
-
             }
         });
 
@@ -83,6 +83,7 @@ public class HomeFragment extends Fragment {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
                 //mHomeViewModel.delete(mTripAdapter.getTripAt(viewHolder.getAdapterPosition()));
+
                 Executors.newSingleThreadExecutor().execute(() -> {
                     RoomDB.getTrips(getContext()).delete(listLiveData.getValue().get(viewHolder.getAdapterPosition()));
                 });
@@ -101,12 +102,6 @@ public class HomeFragment extends Fragment {
 
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        HomeActivity.fragmentFlag = true;
-
-    }
 
     @Override
     public void onDestroyView() {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     android:id="@+id/coordinatorLogIn"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -39,7 +39,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="50dp">
+        android:layout_marginBottom="50dp"
+        >
         <TextView
             android:id="@+id/newUser"
             android:layout_width="wrap_content"
@@ -74,6 +75,7 @@
         android:textColorHint="@color/yellow"
         android:fontFamily="@font/comfortaa_light"
         android:backgroundTint="@color/yellow"
+        android:textCursorDrawable="@null"
         android:drawableLeft="@drawable/ic_baseline_email_24"
         android:drawablePadding="15dp"
         android:inputType="textEmailAddress" />
@@ -91,6 +93,7 @@
         android:textColorHint="@color/yellow"
         android:fontFamily="@font/comfortaa_light"
         android:backgroundTint="@color/yellow"
+        android:textCursorDrawable="@null"
         android:drawableLeft="@drawable/ic_baseline_lock_24"
         android:drawablePadding="15dp"/>
 
@@ -109,7 +112,5 @@
         android:backgroundTint="@color/yellow" />
 
 
-
-
 </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

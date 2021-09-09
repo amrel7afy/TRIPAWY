@@ -60,35 +60,31 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
         holder.getTxtTo().setText(data.getTo());
         holder.getTxtState().setText(data.getTripState());
 
-        if (data.getTripState().equals(TripState.UPCOMING.name())) {
-            if (Build.VERSION.SDK_INT >= 23) {
-                if (!Settings.canDrawOverlays(context.getApplicationContext())) {
-                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                            Uri.parse("package:" + context.getApplicationContext().getPackageName()));
-                    context.startActivity(intent);
-                } else HelperMethods.startScheduling(context.getApplicationContext(), data, 0);
-
-            } else {
-                HelperMethods.startScheduling(context.getApplicationContext(), data, 0);
-            }
+        if(data.getTripState().equals(TripState.UPCOMING.name())){
+            HelperMethods.startScheduling(context.getApplicationContext(), data, 0);
         }
-
 
         holder.getNote().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String notes = "";
-                for (int i = 0; i < data.getNotes().size(); i++) {
-                    notes += (i + 1) + ") " + data.getNotes().get(i) + "\n";
+                if (data.getNotes() != null) {
+                    for (int i = 0; i < data.getNotes().size(); i++) {
+                        notes += (i + 1) + ") " + data.getNotes().get(i) + "\n";
+                    }
+                }else{
+                    notes = "No Notes To show";
                 }
-                final AlertDialog alertDialogNotes = new AlertDialog.Builder(context)
-                        .setCancelable(true)
-                        .setTitle("Notes")
-                        .setMessage(notes)
-                        .create();
-                alertDialogNotes.setCanceledOnTouchOutside(true);
-                alertDialogNotes.show();
-            }
+                    final AlertDialog alertDialogNotes = new AlertDialog.Builder(context)
+                            .setCancelable(true)
+                            .setTitle("Notes")
+                            .setMessage(notes)
+                            .create();
+                    alertDialogNotes.setCanceledOnTouchOutside(true);
+                    alertDialogNotes.show();
+                }
+
+
         });
 
         if (data.getTripState().equals(TripState.UPCOMING.name())) {
@@ -100,7 +96,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Viewholder> {
                         RoomDB.getTrips(context.getApplicationContext()).update(data);
                     });
                     Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                            Uri.parse("google.navigation:q=mansoura"));
+                            Uri.parse("google.navigation:q=cairo"));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     //if (intent.resolveActivity(getPackageManager()) != null) {
                     context.startActivity(intent);

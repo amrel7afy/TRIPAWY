@@ -4,6 +4,8 @@ package com.example.tripawy;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -29,7 +31,6 @@ public class AlarmService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -58,6 +59,7 @@ public class AlarmService extends Service {
                 .setTitle("TRIPAWY")
                 .setCancelable(false)
                 .setMessage("Reminder for your trip!!!")
+
                 .setPositiveButton("start", new DialogInterface.OnClickListener() {
                     @SuppressLint("QueryPermissionsNeeded")
                     public void onClick(DialogInterface dialog, int id) {
@@ -88,9 +90,7 @@ public class AlarmService extends Service {
                     public void onClick(DialogInterface dialog, int id) {
                         long seconds = 1000;
                         HelperMethods.startService(context.getApplicationContext(), trip);
-                        HelperMethods.startScheduling(context,trip,seconds);
-                        onButton.onClicked();
-
+                        HelperMethods.startScheduling(context, trip, seconds);
                         dialog.dismiss();
                         onButton.onClicked();
                     }

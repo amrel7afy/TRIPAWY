@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="6"
-            android:layout_marginBottom="5dp">
+            android:layout_marginBottom="10dp">
 
 
 
@@ -32,11 +32,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="5.5"
                 android:fontFamily="@font/pantondemo_black"
-
                 android:gravity="center_horizontal"
                 android:text="@string/title"
                 android:textColor="@color/sky"
-                android:textSize="30dp" />
+                android:textSize="25dp" />
             <ImageButton
                 android:id="@+id/btnMore"
                 android:layout_width="0dp"
@@ -55,7 +54,8 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:weightSum="2"
-    android:layout_marginBottom="5dp">
+    android:layout_marginBottom="10dp"
+    android:layout_marginRight="20dp">
 
     <TextView
         android:id="@+id/txtFrom"
@@ -66,8 +66,13 @@
         android:textColor="@color/sky"
         android:text="@string/from"
         android:textSize="17dp"
-        android:gravity="center_horizontal"
-         />
+        android:textAlignment="textStart"
+        android:layout_marginLeft="25dp"
+        android:drawableLeft="@drawable/ic_baseline_place_24"
+        android:drawablePadding="10dp"
+
+
+        />
     <TextView
         android:id="@+id/txtDate"
         android:layout_width="0dp"
@@ -75,17 +80,22 @@
         android:fontFamily="@font/comfortaa_bold"
         android:textColor="@color/sky"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:layout_marginLeft="30dp"
+        android:textAlignment="textStart"
         android:text="@string/date"
         android:textSize="17dp"
+        android:drawableLeft="@drawable/ic_baseline_date_range_24"
+        android:drawablePadding="10dp"
         />
 </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="2"
             android:orientation="horizontal"
-            android:layout_marginBottom="5dp">
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="20dp">
 
 
             <TextView
@@ -96,9 +106,11 @@
                 android:textColor="@color/sky"
                 android:layout_height="wrap_content"
                 android:text="@string/to"
-                android:gravity="center_horizontal"
-
+                android:textAlignment="textStart"
+                android:layout_marginLeft="25dp"
                 android:textSize="17dp"
+                android:drawableLeft="@drawable/ic_baseline_place_24"
+                android:drawablePadding="10dp"
                  />
             <TextView
                 android:id="@+id/txtTime"
@@ -107,8 +119,10 @@
                 android:fontFamily="@font/comfortaa_bold"
                 android:textColor="@color/sky"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-
+                android:layout_marginLeft="30dp"
+                android:textAlignment="textStart"
+                android:drawableLeft="@drawable/ic_baseline_access_time_24"
+                android:drawablePadding="10dp"
                 android:text="@string/time"
                 android:textSize="17dp"
                  />
@@ -118,7 +132,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="2"
-            android:layout_marginBottom="5dp">
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="50dp">
             <TextView
                 android:id="@+id/txtStatus"
                 android:layout_width="0dp"
@@ -126,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/status"
                 android:gravity="end"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="20dp"
                 android:textSize="15dp"
                 android:fontFamily="@font/comfortaa_bold"
                 android:textColor="@color/sky"
@@ -135,7 +150,7 @@
                 android:id="@+id/txtState"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="-10dp"
                 android:layout_height="wrap_content"
                 android:text="@string/state"
                 android:textSize="15dp"
@@ -150,6 +165,7 @@
             android:orientation="horizontal"
             android:gravity="center_horizontal"
             android:layout_marginBottom="5dp"
+            android:layout_marginRight="20dp"
             >
 
             <Button
@@ -159,6 +175,7 @@
                 android:textColor="@color/sky"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                 app:strokeColor="@color/sky"
+                android:fontFamily="@font/pantondemo_black"
                 android:layout_marginRight="40dp"
                 />
 
@@ -171,6 +188,7 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                 app:strokeColor="@color/sky"
                 android:layout_marginLeft="40dp"
+                android:fontFamily="@font/pantondemo_black"
                 />
 
 

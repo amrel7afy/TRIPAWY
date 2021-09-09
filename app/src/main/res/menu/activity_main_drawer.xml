@@ -22,7 +22,8 @@
         android:id="@+id/btn_sync"
         android:checkable="true"
         android:icon="@drawable/ic_baseline_sync_24"
-        android:title="@string/sync" />
+        android:title="@string/sync"
+            />
         <item
             android:id="@+id/btn_logout"
             android:checkable="true"

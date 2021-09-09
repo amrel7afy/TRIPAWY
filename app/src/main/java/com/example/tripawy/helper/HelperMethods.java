@@ -15,6 +15,9 @@ import android.location.Location;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -99,23 +102,23 @@ public class HelperMethods extends Activity {
         spinner.setAdapter(adapter);
     }
 
-    public static void startScheduling(Context context, Trip data,long snoozeSeconds) {
+    public static void startScheduling(Context context, Trip data, long snoozeSeconds) {
         long time = data.getTime();
         long timeInSec = 0;
 
 
-         if(snoozeSeconds==0) {
-             timeInSec = time - System.currentTimeMillis();
-             AlarmService.trip = data;
-         }
-         if(timeInSec >=0){
-             Intent intent = new Intent(context, AlarmService.class);
-             PendingIntent pendingIntent = PendingIntent.getService(
-                     context.getApplicationContext(), 234, intent, 0);
-             AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-             alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + timeInSec+snoozeSeconds, pendingIntent);
-             Toast.makeText(context, "Alarm set to after " + timeInSec + " seconds", Toast.LENGTH_LONG).show();
-         }
+        if (snoozeSeconds == 0) {
+            timeInSec = time - System.currentTimeMillis();
+            AlarmService.trip = data;
+        }
+        if (timeInSec >= 0) {
+            Intent intent = new Intent(context, AlarmService.class);
+            PendingIntent pendingIntent = PendingIntent.getService(
+                    context.getApplicationContext(), 234, intent, 0);
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + timeInSec + snoozeSeconds, pendingIntent);
+            Toast.makeText(context, "Alarm set to after " + timeInSec + " seconds", Toast.LENGTH_LONG).show();
+        }
 
     }
 
@@ -189,8 +192,6 @@ public class HelperMethods extends Activity {
     }
 
 
-
-
     //NETWORK
     public static boolean isNetworkConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -202,14 +203,34 @@ public class HelperMethods extends Activity {
         }
     }
 
-    public static void openWifiSettings(Context context){
+    public static void openWifiSettings(Context context) {
 
         final Intent intent = new Intent(Intent.ACTION_MAIN, null);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         final ComponentName cn = new ComponentName("com.android.settings", "com.android.settings.wifi.WifiSettings");
         intent.setComponent(cn);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity( intent);
+        context.startActivity(intent);
     }
 
+
+    //Can Draw Overlays
+    public static boolean canDrawOverlays(Context context) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (!Settings.canDrawOverlays(context.getApplicationContext())) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+    }
+
+    public static void openDrawSettings(Context context) {
+        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:" + context.getApplicationContext().getPackageName()));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
 }

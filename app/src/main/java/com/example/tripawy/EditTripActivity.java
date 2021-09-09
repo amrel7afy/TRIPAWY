@@ -24,7 +24,7 @@ public class EditTripActivity extends AppCompatActivity {
 
     private Button btn_datePicker;
     private Button btn_timePicker;
-    private Button btn_save;
+    private ImageButton btn_save;
     private ImageButton btn_close;
     private EditText editTxtTripName;
     private EditText editTxtStartPoint;
@@ -66,7 +66,7 @@ public class EditTripActivity extends AppCompatActivity {
 
         if (trip.getTripType().equals(TripType.ROUND.name())) {
             radioButtonType = findViewById(R.id.roundEdit);
-        }else {
+        } else {
             radioButtonType = findViewById(R.id.oneWayEdit);
         }
 
@@ -78,11 +78,11 @@ public class EditTripActivity extends AppCompatActivity {
     }
 
     private void initializeComponent() {
-        btn_datePicker = findViewById(R.id.btnDatePicker);
-        btn_timePicker = findViewById(R.id.btnTimePicker);
-        editTxtTripName = findViewById(R.id.editTxtTripName);
-        editTxtStartPoint = findViewById(R.id.editTxtStartPoint);
-        editTxtEndPoint = findViewById(R.id.editTxtEndPoint);
+        btn_datePicker = findViewById(R.id.btnDatePickerEdit);
+        btn_timePicker = findViewById(R.id.btnTimePickerEdit);
+        editTxtTripName = findViewById(R.id.editTxtTripNameEdit);
+        editTxtStartPoint = findViewById(R.id.editTxtStartPointEdit);
+        editTxtEndPoint = findViewById(R.id.editTxtEndPointEdit);
         radioGroupType = findViewById(R.id.radioGroupTypeEdit);
         btn_save = findViewById(R.id.btn_save);
         btn_close = findViewById(R.id.btn_close);
@@ -159,6 +159,10 @@ public class EditTripActivity extends AppCompatActivity {
                 || editTxtStartPoint.getText().toString().isEmpty()
                 || editTxtEndPoint.getText().toString().isEmpty()) {
             Toast.makeText(getApplicationContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        if ((calendar.getTimeInMillis() - System.currentTimeMillis()) < 0) {
+            Toast.makeText(getApplicationContext(), "Date and Time Cannot be in the past", Toast.LENGTH_SHORT).show();
             return true;
         }
         setType();

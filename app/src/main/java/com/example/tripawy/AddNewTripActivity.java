@@ -17,6 +17,8 @@ import android.widget.RadioGroup;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.tripawy.helper.HelperMethods;
+
 import java.text.DateFormat;
 
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ public class AddNewTripActivity extends AppCompatActivity {
     private String tripType;
 
     private int year, month, dayOfMonth, hour, minute;
-    private static Calendar c, cDate;
+    private static Calendar calendar;
 
 
     @Override
@@ -48,7 +50,7 @@ public class AddNewTripActivity extends AppCompatActivity {
 
         initializeComponent();
 
-        Calendar calendar = Calendar.getInstance();
+        calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
         dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
@@ -75,11 +77,10 @@ public class AddNewTripActivity extends AppCompatActivity {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        cDate = Calendar.getInstance();
-                        cDate.set(Calendar.YEAR, year);
-                        cDate.set(Calendar.MONTH, month);
-                        cDate.set(Calendar.DAY_OF_MONTH, day);
-                        updateDate(cDate);
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, month);
+                        calendar.set(Calendar.DAY_OF_MONTH, day);
+                        updateDate(calendar);
 
                     }
                 }, year, month, dayOfMonth);
@@ -93,11 +94,10 @@ public class AddNewTripActivity extends AppCompatActivity {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay,
                                           int minute) {
-                        c = Calendar.getInstance();
-                        c.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                        c.set(Calendar.MINUTE, minute);
-                        c.set(Calendar.SECOND, 0);
-                        updateTime(c);
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        calendar.set(Calendar.MINUTE, minute);
+                        calendar.set(Calendar.SECOND, 0);
+                        updateTime(calendar);
                     }
                 }, hour, minute, false);
 
@@ -116,21 +116,21 @@ public class AddNewTripActivity extends AppCompatActivity {
 
     public void add(View v) {
         if (!checkTripComponents()) {
-            ArrayList<String> notes = new ArrayList<>();
             Trip data = new Trip(
                     editTxtTripName.getText().toString(),
-                    cDate.getTimeInMillis(),
-                    c.getTimeInMillis(),
+                    calendar.getTimeInMillis(),
+                    calendar.getTimeInMillis(),
                     TripState.UPCOMING.name(),
                     tripType,
                     editTxtStartPoint.getText().toString(),
                     editTxtEndPoint.getText().toString(),
-                    notes
+                    null
             );
             // to insert item
             Executors.newSingleThreadExecutor().execute(() -> {
                 RoomDB.getTrips(getApplication()).insert(data);
             });
+
             finish();
         }
     }
@@ -142,12 +142,16 @@ public class AddNewTripActivity extends AppCompatActivity {
     //make a method that check if components are empty
     private boolean checkTripComponents() {
         int selectedId = radioGroupType.getCheckedRadioButtonId();
-        radioButtonType = (RadioButton) findViewById(selectedId);
+        radioButtonType = findViewById(selectedId);
         if (editTxtTripName.getText().toString().isEmpty()
                 || editTxtStartPoint.getText().toString().isEmpty()
                 || editTxtEndPoint.getText().toString().isEmpty() || radioButtonType == null
                 || btn_timePicker.getText().toString().isEmpty() || btn_datePicker.getText().toString().isEmpty()) {
             Toast.makeText(getApplicationContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        if (((calendar.getTimeInMillis() - System.currentTimeMillis()) < 0)) {
+            Toast.makeText(getApplicationContext(), "Date and Time Cannot be in the past", Toast.LENGTH_SHORT).show();
             return true;
         }
         setType();

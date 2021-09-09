@@ -26,7 +26,6 @@ public class Notification extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Executors.newSingleThreadExecutor().execute(() ->{
-
             String input = intent.getStringExtra("inputExtra");
             createNotificationChannel();
             Intent notificationIntent = new Intent(this, HomeActivity.class);
@@ -66,5 +65,6 @@ public class Notification extends Service {
     }
     public Notification() {
     }
+
 
 }
