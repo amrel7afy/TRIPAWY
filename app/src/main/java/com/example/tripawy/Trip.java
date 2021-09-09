@@ -4,16 +4,9 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
-
-import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
-
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 enum TripState {
     UPCOMING,
@@ -24,13 +17,6 @@ enum TripState {
 enum TripType {
     ONE_WAY,
     ROUND
-}
-
-enum TripRepeat {
-    NO,
-    DAILY,
-    WEEKLY,
-    MONTHLY
 }
 
 @Entity

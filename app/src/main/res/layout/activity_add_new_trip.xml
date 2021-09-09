@@ -25,9 +25,11 @@
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/selectableItemBackgroundBorderless"
+                android:onClick="close"
                 app:srcCompat="@drawable/ic_baseline_close_24"
                 app:tint="@color/white"
-                android:onClick="close"/>
+                tools:ignore="SpeakableTextPresentCheck"
+                android:contentDescription="@string/todo" />
 
             <TextView
                 android:layout_width="0dp"
@@ -46,11 +48,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:onClick="add"
+                android:src="@drawable/ic_baseline_add_24"
                 android:text="@string/add"
                 android:textColor="@android:color/white"
-                android:src="@drawable/ic_baseline_add_24"
-                android:onClick="add"
-                />
+                tools:ignore="SpeakableTextPresentCheck" />
 
         </LinearLayout>
 
@@ -82,13 +84,14 @@
                 android:id="@+id/editTxtTripName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:backgroundTint="@color/sky"
-                android:fontFamily="@font/comfortaa_light"
-                android:textColor="@color/sky"
                 android:layout_marginBottom="70dp"
-                />
+                android:backgroundTint="@color/sky"
+                android:ems="10"
+                android:fontFamily="@font/comfortaa_light"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                android:textColor="@color/sky"
+                tools:ignore="SpeakableTextPresentCheck" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -102,15 +105,16 @@
                 android:id="@+id/editTxtStartPoint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:backgroundTint="@color/sky"
-                android:fontFamily="@font/comfortaa_light"
-                android:textColor="@color/sky"
                 android:layout_marginBottom="20dp"
-                android:drawableLeft="@drawable/ic_baseline_place_24"
+                android:backgroundTint="@color/sky"
+                android:drawableStart="@drawable/ic_baseline_place_24"
                 android:drawablePadding="15dp"
-                />
+                android:ems="10"
+                android:fontFamily="@font/comfortaa_light"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                android:textColor="@color/sky"
+                tools:ignore="SpeakableTextPresentCheck" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -124,15 +128,16 @@
                 android:id="@+id/editTxtEndPoint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:backgroundTint="@color/sky"
-                android:fontFamily="@font/comfortaa_light"
-                android:textColor="@color/sky"
                 android:layout_marginBottom="50dp"
-                android:drawableLeft="@drawable/ic_baseline_place_24"
+                android:backgroundTint="@color/sky"
+                android:drawableStart="@drawable/ic_baseline_place_24"
                 android:drawablePadding="15dp"
-                />
+                android:ems="10"
+                android:fontFamily="@font/comfortaa_light"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                android:textColor="@color/sky"
+                tools:ignore="SpeakableTextPresentCheck" />
 
 
 

@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.tripawy.helper.HelperMethods;
+import com.example.tripawy.methods.Methods;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -57,7 +57,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void setBtn_signUp(View v) {
-        if (HelperMethods.isNetworkConnected(this)) {
+        if (Methods.isNetworkConnected(this)) {
             if (checkEmpty()) {
                 mAuth.createUserWithEmailAndPassword(editTextEmail.getText().toString(), editTextPassword.getText().toString())
                         .addOnCompleteListener(this, task -> {
@@ -91,7 +91,7 @@ public class SignUpActivity extends AppCompatActivity {
                     .setBackgroundTint(ContextCompat.getColor(this, R.color.white))
                     .setTextColor(ContextCompat.getColor(this, R.color.sky))
                     .setActionTextColor(ContextCompat.getColor(this, R.color.sky))
-                    .setAction("FIX", view -> HelperMethods.openWifiSettings(SignUpActivity.this));
+                    .setAction("FIX", view -> Methods.openWifiSettings(SignUpActivity.this));
             snackbar.show();
         }
     }

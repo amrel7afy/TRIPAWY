@@ -77,4 +77,5 @@
     <string name="log_out">Log out</string>
     <string name="start_details">Start Details</string>
     <string name="option_0">Recall</string>
+    <string name="todo">TODO</string>
 </resources>

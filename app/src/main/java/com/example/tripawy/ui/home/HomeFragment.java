@@ -8,7 +8,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
@@ -17,14 +16,11 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.tripawy.HomeActivity;
 import com.example.tripawy.R;
 import com.example.tripawy.RoomDB;
 import com.example.tripawy.Trip;
 import com.example.tripawy.TripAdapter;
 import com.example.tripawy.databinding.FragmentHomeBinding;
-import com.example.tripawy.helper.HelperMethods;
-import com.google.android.material.snackbar.Snackbar;
 
 
 import java.util.List;

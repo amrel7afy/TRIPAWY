@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.example.tripawy.R;
 import com.example.tripawy.RoomDB;
 import com.example.tripawy.Trip;
-import com.example.tripawy.helper.HelperMethods;
+import com.example.tripawy.methods.Methods;
 
 import java.util.concurrent.Executors;
 
@@ -90,8 +90,8 @@ public class MyReceiver extends BroadcastReceiver {
                     public void onClick(DialogInterface dialog, int id) {
                         mp.stop();
                         long seconds = 1000;
-                        HelperMethods.startService(context.getApplicationContext(), trip);
-                        HelperMethods.startScheduling(context, trip, seconds);
+                        Methods.startService(context.getApplicationContext(), trip);
+                        Methods.startScheduling(context, trip, seconds);
                         //onButton.onClicked();
 
                         dialog.dismiss();

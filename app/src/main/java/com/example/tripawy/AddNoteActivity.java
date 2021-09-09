@@ -5,22 +5,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.concurrent.Executors;
 
 public class AddNoteActivity extends AppCompatActivity {
 
     private LinearLayout linearLayout;
-    private Button btn_add;
-    private Button btn_decrease;
-    private Button btn_delete;
+
     private EditText editTextNote;
 
-    private int maxNotesNumber = 9;
     private int counter = 0;
     private View view1;
     private Trip trip;
@@ -30,11 +27,9 @@ public class AddNoteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         linearLayout = findViewById(R.id.linear);
-        btn_add = findViewById(R.id.btn_add);
-        btn_delete = findViewById(R.id.btn_delete);
 
         view1 = LayoutInflater.from(AddNoteActivity.this).inflate(R.layout.notes, linearLayout, false);
         linearLayout.addView(view1);
@@ -43,11 +38,15 @@ public class AddNoteActivity extends AppCompatActivity {
             trip = (Trip) getIntent().getSerializableExtra("Trip");
         }
 
+        if (trip.getNotes() != null) {
+            arrayListNotes = trip.getNotes();
+        }
+
 
     }
 
     public void add(View v) {
-        if ((counter < (maxNotesNumber + 1))) {
+        if ((counter < 10)) {
             editTextNote = view1.findViewById(R.id.editTextNote);
             arrayListNotes.add(editTextNote.getText().toString());
             view1 = LayoutInflater.from(AddNoteActivity.this).inflate(R.layout.notes, linearLayout, false);
@@ -66,14 +65,11 @@ public class AddNoteActivity extends AppCompatActivity {
 
     public void save(View v) {
         editTextNote = view1.findViewById(R.id.editTextNote);
-        if(editTextNote.getText().toString().isEmpty()){
-        }else{
+        if (!(editTextNote.getText().toString().isEmpty())) {
             arrayListNotes.add(editTextNote.getText().toString());
         }
         trip.setNotes(arrayListNotes);
-        Executors.newSingleThreadExecutor().execute(() -> {
-            RoomDB.getTrips(this.getApplicationContext()).update(trip);
-        });
+        Executors.newSingleThreadExecutor().execute(() -> RoomDB.getTrips(this.getApplicationContext()).update(trip));
         finish();
     }
 

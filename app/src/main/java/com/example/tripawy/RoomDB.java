@@ -11,8 +11,8 @@ public class RoomDB {
         if (db == null) {
             db = Room.databaseBuilder(application,
                     AppDatabase.class, "database").build();
-            return db.tripDao();
-        } else return db.tripDao();
+        }
+        return db.tripDao();
     }
 
 

@@ -5,10 +5,8 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.TypeConverters;
 import androidx.room.Update;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -32,8 +30,6 @@ public interface TripDao {
     @Query("DELETE  FROM trip ")
     void deleteAll();
 
-    @Insert
-    void insertAll(Trip... trips);
 
     @Insert
     void insert(Trip trip);
