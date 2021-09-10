@@ -96,6 +96,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
+    //Empty Fields Check
     public boolean checkEmpty() {
         int count = 0;
         if (editTextFirstName.getText().toString().isEmpty()) {

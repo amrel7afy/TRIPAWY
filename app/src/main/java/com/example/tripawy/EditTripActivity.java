@@ -151,6 +151,8 @@ public class EditTripActivity extends AppCompatActivity {
         return false;
     }
 
+
+    //set Type or Trip
     private void setType() {
         if (radioButtonType.getId() == R.id.oneWayEdit) {
             tripType = TripType.ONE_WAY.name();

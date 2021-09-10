@@ -24,6 +24,7 @@ import com.example.tripawy.pinnednotificatoin.Notification;
 
 public class Methods extends Activity {
 
+    //Alarm Scheduling
     public static void startScheduling(Context context, Trip data, long snoozeSeconds) {
         long time = data.getTime();
         long timeInSec = 0;
@@ -41,22 +42,17 @@ public class Methods extends Activity {
                     context.getApplicationContext(), data.getId(), intent, 0);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + timeInSec + snoozeSeconds, pendingIntent);
-            Toast.makeText(context, "Alarm set to after " + timeInSec + " seconds", Toast.LENGTH_LONG).show();
         }
 
     }
 
+    //Notification Start
     public static void startService(Context context, Trip trip) {
         Intent serviceIntent = new Intent(context, Notification.class);
         serviceIntent.putExtra("inputExtra", "You are waiting for trip  " + trip.getName() + "");
         ContextCompat.startForegroundService(context, serviceIntent);
     }
 
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
-    }
 
     //NETWORK
     public static boolean isNetworkConnected(Context context) {
@@ -91,5 +87,13 @@ public class Methods extends Activity {
                 Uri.parse("package:" + context.getApplicationContext().getPackageName()));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
+    }
+
+    //Stop Alarm
+    public static void stopAlarm(Context context,Trip trip){
+        Intent intent = new Intent(context, MyReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), trip.getId(), intent, 0);
+        AlarmManager alarmManager = (AlarmManager) context.getApplicationContext().getSystemService(ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
     }
 }

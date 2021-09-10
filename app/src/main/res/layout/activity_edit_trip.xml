@@ -104,6 +104,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
+                android:drawableStart="@drawable/ic_baseline_place_24"
+                android:drawablePadding="15dp"
                 android:backgroundTint="@color/sky"
                 android:fontFamily="@font/comfortaa_light"
                 android:textColor="@color/sky"
@@ -126,6 +128,8 @@
                 android:inputType="textPersonName"
                 android:backgroundTint="@color/sky"
                 android:fontFamily="@font/comfortaa_light"
+                android:drawableStart="@drawable/ic_baseline_place_24"
+                android:drawablePadding="15dp"
                 android:textColor="@color/sky"
                 android:layout_marginBottom="50dp"
                 />

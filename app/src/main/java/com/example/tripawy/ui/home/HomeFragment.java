@@ -21,6 +21,7 @@ import com.example.tripawy.RoomDB;
 import com.example.tripawy.Trip;
 import com.example.tripawy.TripAdapter;
 import com.example.tripawy.databinding.FragmentHomeBinding;
+import com.example.tripawy.methods.Methods;
 
 
 import java.util.List;
@@ -51,6 +52,7 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        // to get trips
         LiveData<List<Trip>> listLiveData = RoomDB.getTrips(getContext()).getAllUpcoming();
         listLiveData.observe((LifecycleOwner) getContext(), new Observer<List<Trip>>() {
             @Override
@@ -67,7 +69,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        //swipe to delete the trip from home
+        //swipe to delete the trip
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT |
                 ItemTouchHelper.RIGHT) {
             @Override
@@ -78,8 +80,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
-                //mHomeViewModel.delete(mTripAdapter.getTripAt(viewHolder.getAdapterPosition()));
-
+                Methods.stopAlarm(getContext(), listLiveData.getValue().get(viewHolder.getAdapterPosition()));
                 Executors.newSingleThreadExecutor().execute(() -> {
                     RoomDB.getTrips(getContext()).delete(listLiveData.getValue().get(viewHolder.getAdapterPosition()));
                 });
@@ -91,13 +92,6 @@ public class HomeFragment extends Fragment {
 
 
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-    }
-
 
     @Override
     public void onDestroyView() {

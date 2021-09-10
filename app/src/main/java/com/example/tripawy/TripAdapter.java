@@ -53,34 +53,40 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         holder.getTxtTo().setText(data.getTo());
         holder.getTxtState().setText(data.getTripState());
 
-        if(data.getTripState().equals(TripState.UPCOMING.name())){
+        //Alarm scheduling
+        if (data.getTripState().equals(TripState.UPCOMING.name())) {
             Methods.startScheduling(context.getApplicationContext(), data, 0);
+        } else {
+            Methods.stopAlarm(context, data);
         }
 
+        //Show Notes Button
         holder.getNote().setOnClickListener(v -> {
             StringBuilder notes = new StringBuilder();
             if (data.getNotes() != null) {
                 for (int i = 0; i < data.getNotes().size(); i++) {
                     notes.append(i + 1).append(") ").append(data.getNotes().get(i)).append("\n");
                 }
-            }else{
+            } else {
                 notes = new StringBuilder("No Notes To show");
             }
-                final AlertDialog alertDialogNotes = new AlertDialog.Builder(context)
-                        .setCancelable(true)
-                        .setTitle("Notes")
-                        .setMessage(notes.toString())
-                        .create();
-                alertDialogNotes.setCanceledOnTouchOutside(true);
-                alertDialogNotes.show();
-            });
+            final AlertDialog alertDialogNotes = new AlertDialog.Builder(context)
+                    .setCancelable(true)
+                    .setTitle("Notes")
+                    .setMessage(notes.toString())
+                    .create();
+            alertDialogNotes.setCanceledOnTouchOutside(true);
+            alertDialogNotes.show();
+        });
 
+        //Start Button
         if (data.getTripState().equals(TripState.UPCOMING.name())) {
             holder.getStart().setOnClickListener(v -> {
+                Methods.stopAlarm(context, data);
                 data.setTripState("DONE");
                 Executors.newSingleThreadExecutor().execute(() -> RoomDB.getTrips(context.getApplicationContext()).update(data));
                 Intent intent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("google.navigation:q="+data.getTo()));
+                        Uri.parse("google.navigation:q=" + data.getTo()));
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 context.startActivity(intent);
@@ -92,6 +98,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
             holder.getStart().setTextColor(context.getResources().getColor(R.color.inactive));
         }
 
+        //More PopUp Menu
         holder.getBtnMore().setOnClickListener(v -> {
             PopupMenu popup = new PopupMenu(v.getContext(), holder.getBtnMore());
             popup.inflate(R.menu.card_more_menu);
@@ -128,9 +135,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
                         return true;
                     case R.id.delete:
                         AlertDialog("Do you want to remove this Trip?", 3, v, data);
+                        Methods.stopAlarm(context, data);
                         return true;
                     case R.id.cancel:
                         AlertDialog("Do you want to cancel this Trip?", 4, v, data);
+                        Methods.stopAlarm(context, data);
+
                         return true;
                     default:
                         return false;
@@ -142,6 +152,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
 
     }
 
+    //Cahnge Direction on recalling
     private void changeDirection(Trip data) {
         String temp;
         temp = data.getFrom();
@@ -150,6 +161,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
     }
 
 
+    //Alert dialog on Deleting or Cancel
     private void AlertDialog(String message, int index, View v, Trip data) {
         final AlertDialog alertDialogDelete = new AlertDialog.Builder(v.getContext())
                 .setCancelable(false)
@@ -191,6 +203,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         return Objects.requireNonNull(tripArrayList.getValue()).size();
     }
 
+    //ViewHolder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final View itemView;
         private TextView txtDate;
@@ -201,7 +214,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         private TextView txtState;
         private Button note;
         private ImageButton btnMore;
-        Button btn_start;
+        private Button btn_start;
 
 
         public ViewHolder(@NonNull View itemView) {

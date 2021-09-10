@@ -64,6 +64,7 @@ public class HomeActivity extends AppCompatActivity {
         recyclerViewHome = findViewById(R.id.recyclerViewHome);
         recyclerViewHistory = findViewById(R.id.recyclerViewHistory);
 
+        //Floating Action Point Button
         binding.appBarHome.fab.setOnClickListener(view -> {
             if (Methods.canDrawOverlays(getApplicationContext())) {
                 Intent intent = new Intent(HomeActivity.this, AddNewTripActivity.class);
@@ -92,6 +93,7 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        //User Info
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
 
@@ -109,6 +111,7 @@ public class HomeActivity extends AppCompatActivity {
             String uid = user.getUid();
 
 
+            //Navigation Drawer
             navigationView.setNavigationItemSelectedListener(menuItem -> {
                 int id = menuItem.getItemId();
                 if (id == R.id.btn_sync) {
@@ -146,6 +149,7 @@ public class HomeActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
 
+        //Delete All
         menu.getItem(0).setOnMenuItemClickListener(item -> {
             recyclerViewHome = findViewById(R.id.recyclerViewHome);
             recyclerViewHistory = findViewById(R.id.recyclerViewHistory);
@@ -163,6 +167,7 @@ public class HomeActivity extends AppCompatActivity {
         return true;
     }
 
+    //Alert Dialog For Deleting Or Canceling
     private void alertDialogDeleteAll(boolean flag) {
         final AlertDialog alertDialog = new AlertDialog.Builder(HomeActivity.this)
                 .setCancelable(false)
@@ -203,6 +208,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        //get All trips for Sync
         LiveData<List<Trip>> listLiveData = RoomDB.getTrips(getApplicationContext()).getAll();
         listLiveData.observe(this, trips -> tripList = trips);
 
@@ -219,7 +225,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 databaseReference.child(uid).child("Trips").setValue(tripList);
 
-                Toast.makeText(HomeActivity.this, "Data Added", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeActivity.this, "Data Synced", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -231,6 +237,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void signOut() {
+        //Clear Database Before Logout
         Executors.newSingleThreadExecutor().execute(() -> RoomDB.getTrips(getApplication()).deleteAll());
         Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
         startActivity(intent);

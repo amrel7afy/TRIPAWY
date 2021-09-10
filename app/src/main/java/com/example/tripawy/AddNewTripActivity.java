@@ -140,6 +140,7 @@ public class AddNewTripActivity extends AppCompatActivity {
         return false;
     }
 
+    //Set type for trip
     private void setType() {
         if (radioButtonType.getId() == R.id.oneWay) {
             tripType = TripType.ONE_WAY.name();

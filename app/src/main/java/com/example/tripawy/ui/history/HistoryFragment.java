@@ -40,7 +40,7 @@ public class HistoryFragment extends Fragment {
 
 
         recyclerViewHistory = root.findViewById(R.id.recyclerViewHistory);
-        txtNoTrips=root.findViewById(R.id.NoTripsHistory);
+        txtNoTrips = root.findViewById(R.id.NoTripsHistory);
 
 
         return root;
@@ -54,19 +54,19 @@ public class HistoryFragment extends Fragment {
         otherListLiveData.observe(this, new Observer<List<Trip>>() {
             @Override
             public void onChanged(List<Trip> trips) {
-                if (otherListLiveData.getValue().size()==0){
+                if (otherListLiveData.getValue().size() == 0) {
                     txtNoTrips.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     txtNoTrips.setVisibility(View.GONE);
                 }
-                    TripAdapter cardAdapter = new TripAdapter(getContext(), otherListLiveData);
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-                    recyclerViewHistory.setLayoutManager(linearLayoutManager);
-                    recyclerViewHistory.setAdapter(cardAdapter);
-                }
+                TripAdapter cardAdapter = new TripAdapter(getContext(), otherListLiveData);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                recyclerViewHistory.setLayoutManager(linearLayoutManager);
+                recyclerViewHistory.setAdapter(cardAdapter);
+            }
         });
 
-        //swipe to delete the trip from home
+        //swipe to delete the trip
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT |
                 ItemTouchHelper.RIGHT) {
             @Override
@@ -85,12 +85,6 @@ public class HistoryFragment extends Fragment {
 
 
         }).attachToRecyclerView(recyclerViewHistory);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
     }
 
     @Override

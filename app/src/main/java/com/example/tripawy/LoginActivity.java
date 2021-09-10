@@ -153,11 +153,12 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // Failed to read value
-                Toast.makeText(getApplicationContext(), "Failed 2", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_LONG).show();
             }
         });
     }
 
+    //Empty Fields Check
     public boolean checkEmpty() {
         int count = 0;
 

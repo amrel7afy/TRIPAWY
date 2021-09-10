@@ -22,14 +22,11 @@ import java.util.concurrent.Executors;
 
 public class MyReceiver extends BroadcastReceiver {
 
-    public  Trip trip;
+    private Trip trip;
     private MediaPlayer mp;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        // Extract data from the intent
-        String name = intent.getStringExtra("NAME_KEY");
-
         mp = MediaPlayer.create(context.getApplicationContext(), R.raw.alarm);
         try {
             mp.start();
@@ -37,17 +34,14 @@ public class MyReceiver extends BroadcastReceiver {
         } catch (Exception e) {
         }
 
+        //Getting Trip Instance
         Bundle args = intent.getBundleExtra("Trip");
         trip = (Trip) args.getSerializable("TripObj");
-        Toast.makeText(context,"Hello Broadcast",Toast.LENGTH_LONG).show();
 
     }
 
-    private void stopSelf() {
-        stopSelf();
-    }
 
-
+    //Alarm Alert Dialog
     public void showAlertDialog(Context context) {
         int LAYOUT_FLAG;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -58,7 +52,7 @@ public class MyReceiver extends BroadcastReceiver {
         AlertDialog alertDialog = new AlertDialog.Builder(context)
                 .setTitle("TRIPAWY")
                 .setCancelable(false)
-                .setMessage("Reminder for your trip!!!")
+                .setMessage("Reminder for your trip !!!")
                 .setPositiveButton("start", new DialogInterface.OnClickListener() {
                     @SuppressLint("QueryPermissionsNeeded")
                     public void onClick(DialogInterface dialog, int id) {
@@ -71,10 +65,7 @@ public class MyReceiver extends BroadcastReceiver {
                         Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
                                 Uri.parse("google.navigation:q=" + trip.getTo()));
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        //if (intent.resolveActivity(getPackageManager()) != null) {
                         context.startActivity(intent);
-                        // }
-                        //onButton.onClicked();
                     }
                 })
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
@@ -84,7 +75,7 @@ public class MyReceiver extends BroadcastReceiver {
                         Executors.newSingleThreadExecutor().execute(() -> {
                             RoomDB.getTrips(context.getApplicationContext()).update(trip);
                         });
-                        //onButton.onClicked();
+
                     }
                 }).setNeutralButton("snooze", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -92,24 +83,14 @@ public class MyReceiver extends BroadcastReceiver {
                         long seconds = 1000;
                         Methods.startService(context.getApplicationContext(), trip);
                         Methods.startScheduling(context, trip, seconds);
-                        //onButton.onClicked();
 
                         dialog.dismiss();
-                        //onButton.onClicked();
                     }
                 }).create();
         alertDialog.getWindow().setType(LAYOUT_FLAG);
         alertDialog.show();
     }
 
-   /* @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if ((mp.isPlaying())) {
-            mp.stop();
-        }
-        mp.release();
-    }*/
 }
 
 
